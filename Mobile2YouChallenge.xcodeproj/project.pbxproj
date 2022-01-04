@@ -9,23 +9,27 @@
 /* Begin PBXBuildFile section */
 		B8B22B7D2784DCCC00499840 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22B7C2784DCCC00499840 /* AppDelegate.swift */; };
 		B8B22B7F2784DCCC00499840 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22B7E2784DCCC00499840 /* SceneDelegate.swift */; };
-		B8B22B812784DCCC00499840 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22B802784DCCC00499840 /* ViewController.swift */; };
-		B8B22B842784DCCC00499840 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8B22B822784DCCC00499840 /* Main.storyboard */; };
+		B8B22B812784DCCC00499840 /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22B802784DCCC00499840 /* MovieDetailViewController.swift */; };
 		B8B22B872784DCCC00499840 /* Mobile2YouChallenge.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B8B22B852784DCCC00499840 /* Mobile2YouChallenge.xcdatamodeld */; };
 		B8B22B892784DCCD00499840 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8B22B882784DCCD00499840 /* Assets.xcassets */; };
-		B8B22B8C2784DCCD00499840 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8B22B8A2784DCCD00499840 /* LaunchScreen.storyboard */; };
+		B8B22B9B2784FBCA00499840 /* MovieDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22B9A2784FBCA00499840 /* MovieDetailViewModel.swift */; };
+		B8B22B9D2784FF5500499840 /* UITableView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22B9C2784FF5500499840 /* UITableView+Constraints.swift */; };
+		B8B22BA5278503BA00499840 /* MainMovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22BA4278503BA00499840 /* MainMovieTableViewCell.swift */; };
+		B8B22BA7278503DC00499840 /* SimilarMoviesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22BA6278503DC00499840 /* SimilarMoviesTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B8B22B792784DCCC00499840 /* Mobile2YouChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mobile2YouChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8B22B7C2784DCCC00499840 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8B22B7E2784DCCC00499840 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B8B22B802784DCCC00499840 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B8B22B832784DCCC00499840 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B8B22B802784DCCC00499840 /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
 		B8B22B862784DCCC00499840 /* Mobile2YouChallenge.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mobile2YouChallenge.xcdatamodel; sourceTree = "<group>"; };
 		B8B22B882784DCCD00499840 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B8B22B8B2784DCCD00499840 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B8B22B8D2784DCCD00499840 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B8B22B9A2784FBCA00499840 /* MovieDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewModel.swift; sourceTree = "<group>"; };
+		B8B22B9C2784FF5500499840 /* UITableView+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Constraints.swift"; sourceTree = "<group>"; };
+		B8B22BA4278503BA00499840 /* MainMovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMovieTableViewCell.swift; sourceTree = "<group>"; };
+		B8B22BA6278503DC00499840 /* SimilarMoviesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarMoviesTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +68,6 @@
 				B8B22B982784E0A400499840 /* View Model */,
 				B8B22B972784E07600499840 /* Model */,
 				B8B22B992784E0C700499840 /* Resources */,
-				B8B22B822784DCCC00499840 /* Main.storyboard */,
-				B8B22B8A2784DCCD00499840 /* LaunchScreen.storyboard */,
 				B8B22B8D2784DCCD00499840 /* Info.plist */,
 				B8B22B852784DCCC00499840 /* Mobile2YouChallenge.xcdatamodeld */,
 			);
@@ -84,7 +86,7 @@
 		B8B22B942784DD7A00499840 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B8B22B802784DCCC00499840 /* ViewController.swift */,
+				B8B22B9E2785032600499840 /* Screens */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -100,6 +102,7 @@
 		B8B22B962784DDB300499840 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B8B22B9C2784FF5500499840 /* UITableView+Constraints.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -114,6 +117,7 @@
 		B8B22B982784E0A400499840 /* View Model */ = {
 			isa = PBXGroup;
 			children = (
+				B8B22B9A2784FBCA00499840 /* MovieDetailViewModel.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -124,6 +128,24 @@
 				B8B22B882784DCCD00499840 /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		B8B22B9E2785032600499840 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				B8B22B9F2785035C00499840 /* Movie Detail */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		B8B22B9F2785035C00499840 /* Movie Detail */ = {
+			isa = PBXGroup;
+			children = (
+				B8B22B802784DCCC00499840 /* MovieDetailViewController.swift */,
+				B8B22BA4278503BA00499840 /* MainMovieTableViewCell.swift */,
+				B8B22BA6278503DC00499840 /* SimilarMoviesTableViewCell.swift */,
+			);
+			path = "Movie Detail";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,9 +206,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8B22B8C2784DCCD00499840 /* LaunchScreen.storyboard in Resources */,
 				B8B22B892784DCCD00499840 /* Assets.xcassets in Resources */,
-				B8B22B842784DCCC00499840 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,33 +217,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8B22B9D2784FF5500499840 /* UITableView+Constraints.swift in Sources */,
 				B8B22B872784DCCC00499840 /* Mobile2YouChallenge.xcdatamodeld in Sources */,
-				B8B22B812784DCCC00499840 /* ViewController.swift in Sources */,
+				B8B22BA5278503BA00499840 /* MainMovieTableViewCell.swift in Sources */,
+				B8B22B9B2784FBCA00499840 /* MovieDetailViewModel.swift in Sources */,
+				B8B22BA7278503DC00499840 /* SimilarMoviesTableViewCell.swift in Sources */,
+				B8B22B812784DCCC00499840 /* MovieDetailViewController.swift in Sources */,
 				B8B22B7D2784DCCC00499840 /* AppDelegate.swift in Sources */,
 				B8B22B7F2784DCCC00499840 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		B8B22B822784DCCC00499840 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B8B22B832784DCCC00499840 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		B8B22B8A2784DCCD00499840 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B8B22B8B2784DCCD00499840 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		B8B22B8E2784DCCD00499840 /* Debug */ = {
@@ -352,11 +357,12 @@
 				DEVELOPMENT_TEAM = 9UCZ959GPV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mobile2YouChallenge/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Mobile2YouChallenge;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -366,7 +372,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -380,11 +386,12 @@
 				DEVELOPMENT_TEAM = 9UCZ959GPV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Mobile2YouChallenge/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Mobile2YouChallenge;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -394,7 +401,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
