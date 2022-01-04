@@ -58,16 +58,72 @@
 		B8B22B7B2784DCCC00499840 /* Mobile2YouChallenge */ = {
 			isa = PBXGroup;
 			children = (
-				B8B22B7C2784DCCC00499840 /* AppDelegate.swift */,
-				B8B22B7E2784DCCC00499840 /* SceneDelegate.swift */,
-				B8B22B802784DCCC00499840 /* ViewController.swift */,
+				B8B22B932784DD5200499840 /* Core */,
+				B8B22B952784DDA700499840 /* Utilities */,
+				B8B22B942784DD7A00499840 /* View */,
+				B8B22B982784E0A400499840 /* View Model */,
+				B8B22B972784E07600499840 /* Model */,
+				B8B22B992784E0C700499840 /* Resources */,
 				B8B22B822784DCCC00499840 /* Main.storyboard */,
-				B8B22B882784DCCD00499840 /* Assets.xcassets */,
 				B8B22B8A2784DCCD00499840 /* LaunchScreen.storyboard */,
 				B8B22B8D2784DCCD00499840 /* Info.plist */,
 				B8B22B852784DCCC00499840 /* Mobile2YouChallenge.xcdatamodeld */,
 			);
 			path = Mobile2YouChallenge;
+			sourceTree = "<group>";
+		};
+		B8B22B932784DD5200499840 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				B8B22B7C2784DCCC00499840 /* AppDelegate.swift */,
+				B8B22B7E2784DCCC00499840 /* SceneDelegate.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		B8B22B942784DD7A00499840 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B8B22B802784DCCC00499840 /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B8B22B952784DDA700499840 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				B8B22B962784DDB300499840 /* Extensions */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		B8B22B962784DDB300499840 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B8B22B972784E07600499840 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B8B22B982784E0A400499840 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
+		B8B22B992784E0C700499840 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B8B22B882784DCCD00499840 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
