@@ -29,12 +29,14 @@ class MainMovieTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
         
         contentView.addSubview(movieImageView)
         contentView.addSubview(titleBackgroundView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(likeButton)
         
+        setupMovieData()
         setupImage()
         setupTitleBackground()
         setupMovieTitleLabel()
@@ -42,7 +44,6 @@ class MainMovieTableViewCell: UITableViewCell {
         setupTotalLikes()
         setupTotalViews()
         
-        setupMovieData()
     }
     
     required init?(coder: NSCoder) {
@@ -132,20 +133,6 @@ class MainMovieTableViewCell: UITableViewCell {
         changeLikeButtonImage()
     }
     
-    private func createStackView(with views: [UIView]) -> UIStackView {
-        let stackView = UIStackView()
-        stackView.axis = NSLayoutConstraint.Axis.horizontal
-        stackView.distribution = UIStackView.Distribution.fill
-        stackView.alignment = UIStackView.Alignment.center
-        stackView.spacing = 5
-        
-        views.forEach({stackView.addArrangedSubview($0)})
-        
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(stackView)
-        return stackView
-    }
-    
     private func setupTotalLikes() {
         // Image View
         totalLikesImageView.image = UIImage(systemName: "suit.heart.fill")
@@ -156,7 +143,8 @@ class MainMovieTableViewCell: UITableViewCell {
         totalLikesLabel.font = font
         totalLikesLabel.tintColor = .darkGray
         
-        let stackView = createStackView(with: [totalLikesImageView, totalLikesLabel])
+        let stackView = createStackView(with: [totalLikesImageView, totalLikesLabel], axis: .horizontal)
+        contentView.addSubview(stackView)
         
         NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: titleBackgroundView.bottomAnchor, constant: -18),
@@ -174,7 +162,8 @@ class MainMovieTableViewCell: UITableViewCell {
         totalViewsLabel.font = font
         totalViewsLabel.tintColor = .darkGray
         
-        let stackView = createStackView(with: [totalViewsImageView, totalViewsLabel])
+        let stackView = createStackView(with: [totalViewsImageView, totalViewsLabel], axis: .horizontal)
+        contentView.addSubview(stackView)
         
         NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: titleBackgroundView.bottomAnchor, constant: -18),
