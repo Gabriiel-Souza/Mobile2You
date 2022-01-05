@@ -41,7 +41,7 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 {
             return UIScreen.main.bounds.height * 0.6
         } else {
-            return UIScreen.main.bounds.height * 0.15
+            return UIScreen.main.bounds.height * 0.11
         }
     }
 }

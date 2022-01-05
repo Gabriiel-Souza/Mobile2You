@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B8A4F9F12785502E001FF5B3 /* UIFont+Traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A4F9EF2785502E001FF5B3 /* UIFont+Traits.swift */; };
 		B8A4F9F22785502E001FF5B3 /* UIView+Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A4F9F02785502E001FF5B3 /* UIView+Gradient.swift */; };
+		B8A4F9F927861CE3001FF5B3 /* UIView+CreateViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A4F9F827861CE3001FF5B3 /* UIView+CreateViews.swift */; };
 		B8B22B7D2784DCCC00499840 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22B7C2784DCCC00499840 /* AppDelegate.swift */; };
 		B8B22B7F2784DCCC00499840 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22B7E2784DCCC00499840 /* SceneDelegate.swift */; };
 		B8B22B812784DCCC00499840 /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B22B802784DCCC00499840 /* MovieDetailViewController.swift */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		B8A4F9EF2785502E001FF5B3 /* UIFont+Traits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Traits.swift"; sourceTree = "<group>"; };
 		B8A4F9F02785502E001FF5B3 /* UIView+Gradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Gradient.swift"; sourceTree = "<group>"; };
+		B8A4F9F827861CE3001FF5B3 /* UIView+CreateViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+CreateViews.swift"; sourceTree = "<group>"; };
 		B8B22B792784DCCC00499840 /* Mobile2YouChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mobile2YouChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8B22B7C2784DCCC00499840 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8B22B7E2784DCCC00499840 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				B8A4F9EF2785502E001FF5B3 /* UIFont+Traits.swift */,
 				B8A4F9F02785502E001FF5B3 /* UIView+Gradient.swift */,
 				B8B22B9C2784FF5500499840 /* UITableView+Constraints.swift */,
+				B8A4F9F827861CE3001FF5B3 /* UIView+CreateViews.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 			files = (
 				B8B22B9D2784FF5500499840 /* UITableView+Constraints.swift in Sources */,
 				B8B22B872784DCCC00499840 /* Mobile2YouChallenge.xcdatamodeld in Sources */,
+				B8A4F9F927861CE3001FF5B3 /* UIView+CreateViews.swift in Sources */,
 				B8B22BA5278503BA00499840 /* MainMovieTableViewCell.swift in Sources */,
 				B8B22B9B2784FBCA00499840 /* MovieDetailViewModel.swift in Sources */,
 				B8B22BA7278503DC00499840 /* SimilarMoviesTableViewCell.swift in Sources */,
