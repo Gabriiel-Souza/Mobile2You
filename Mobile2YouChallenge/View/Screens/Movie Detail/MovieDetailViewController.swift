@@ -14,6 +14,7 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .purple
         
         viewModel = MovieDetailViewModel(delegate: self)
        
@@ -25,8 +26,9 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
     }
     
     private func setupTableView() {
+        detailTableView.frame = view.bounds
+        detailTableView.delaysContentTouches = false
         view.addSubview(detailTableView)
-        detailTableView.rowHeight = 100
         
         // Delegates
         detailTableView.delegate = viewModel
