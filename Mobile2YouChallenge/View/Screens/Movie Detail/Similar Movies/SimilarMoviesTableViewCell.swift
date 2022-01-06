@@ -15,34 +15,81 @@ class SimilarMoviesTableViewCell: UITableViewCell {
     private let titleLabel = UILabel()
     private let informationLabel = UILabel()
     private lazy var MovieLabelStackView: UIStackView = {
-        let stackView = createStackView(with: [titleLabel, informationLabel], axis: .vertical)
+        let stackView = createStackView(with: [titleLabel, informationLabel],
+                                        axis: .vertical)
         return stackView
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    init(movie: SimilarMovie?) {
+        super.init(style: .default, reuseIdentifier: "SimilarMoviesTableViewCell")
+        selectionStyle = .none
         backgroundColor = .black
         selectionStyle = .none
         
+        // Subviews
         contentView.addSubview(movieImageView)
         contentView.addSubview(MovieLabelStackView)
         
-        setupMovieData()
-        setupImage()
-        setupMovieLabels()
+        // Initial Configuration
+        setupMovieData(movie: movie)
+        configureImage()
+        configureMovieLabels()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupMovieData() {
-        movieImageView.image = UIImage(named: "TheJokerPoster")
-        titleLabel.text = "The Joker"
-        informationLabel.text = "1990 Drama, Fantasy"
+    func setupMovieData(movie: SimilarMovie?) {
+        guard let movie = movie else { return }
+        let movieYear = movie.release_date.components(separatedBy: "-").first
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.titleLabel.text = movie.title
+            
+            var genresID = [Int]()
+            for i in 0..<min(movie.genre_ids.count-1, 3) {
+                genresID.append(movie.genre_ids[i])
+            }
+            
+            var genres = [Genre]()
+            genresID.forEach { id in
+                let validGenre = MovieDB.shared.genres.first { genre in
+                    genre.id == id
+                }
+                if let validGenre = validGenre {
+                    genres.append(validGenre)
+                }
+            }
+            
+            var element = 0
+            var genresDescription = ""
+            genres.forEach { genre in
+                if element > 0 {
+                    genresDescription += ", "
+                }
+                genresDescription += genre.name
+                element += 1
+            }
+            
+            
+            self.informationLabel.text = "\(movieYear ?? "") \(genresDescription)"
+        }
+        
     }
     
-    private func setupImage() {
+    func updateMovieImage(_ image: UIImage?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.movieImageView.image = image
+        }
+    }
+}
+
+// MARK: - Constraints/Configs
+extension SimilarMoviesTableViewCell {
+    private func configureImage() {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
         movieImageView.backgroundColor = .gray
         movieImageView.contentMode = .scaleAspectFill
@@ -55,7 +102,7 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         ])
     }
     
-    private func setupMovieLabels() {
+    private func configureMovieLabels() {
         MovieLabelStackView.alignment = .leading
         
         titleLabel.font = UIFont.preferredFont(forTextStyle: .body).bold

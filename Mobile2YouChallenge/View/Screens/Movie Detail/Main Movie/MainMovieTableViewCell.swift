@@ -27,39 +27,89 @@ class MainMovieTableViewCell: UITableViewCell {
     private var totalViewsLabel = UILabel()
     
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    init(movie: MainMovie?) {
+        super.init(style: .default, reuseIdentifier: "MainMovieTableViewCell")
         selectionStyle = .none
         
+        // Subviews
         contentView.addSubview(movieImageView)
         contentView.addSubview(titleBackgroundView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(likeButton)
         
-        setupMovieData()
-        setupImage()
-        setupTitleBackground()
-        setupMovieTitleLabel()
-        setupLikeButton()
-        setupTotalLikes()
-        setupTotalViews()
+        // Initial Configuration
+        setupMovieData(movie)
+        configureImage()
+        configureTitleBackground()
+        configureMovieTitleLabel()
+        configureLikeButton()
+        configureTotalLikes()
+        configureTotalViews()
         
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // TODO: - Set real data to variables
-    func setupMovieData() {
-        movieImageView.image = UIImage(named: "TheJokerPoster")
-        titleLabel.text = "The Joker"
+    private func setupMovieData(_ movie: MainMovie?) {
+        guard let movie = movie else { return }
         
-        totalLikesLabel.text = "1.2K Likes"
-        totalViewsLabel.text = "120.000 Views"
+        // Format total votes number
+        var totalVotesCount = Double(movie.vote_count)
+        var isMoreThanThousand = false
+        
+        if totalVotesCount > 1000 {
+            totalVotesCount /= 1000
+            isMoreThanThousand = true
+        }
+        
+        var totalVotes = String(format: "%.1f", totalVotesCount)
+        
+        if isMoreThanThousand {
+            totalVotes+="K"
+        }
+        
+        totalVotes += " Likes"
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            // Title
+            self.titleLabel.text = movie.title
+            
+            // Total Likes
+            self.totalLikesLabel.text = totalVotes
+            
+            // Total Views
+            self.totalViewsLabel.text = "\(movie.popularity) Views"
+        }
     }
     
-    private func setupImage() {
+    func updateMovieImage(_ image: UIImage?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.movieImageView.image = image
+        }
+    }
+    
+    private func changeLikeButtonImage() {
+        let buttonImage = UIImage(systemName: isLiked ? "suit.heart.fill" : "suit.heart")
+        likeButton.setBackgroundImage(buttonImage, for: .normal)
+    }
+    
+    @objc private func likeButtonPressed(sender: UIButton!) {
+        isLiked.toggle()
+        print("Like Button Pressed")
+        changeLikeButtonImage()
+    }
+    
+}
+
+// MARK: - Constraints/Configs
+extension MainMovieTableViewCell {
+    private func configureImage() {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
         movieImageView.backgroundColor = .gray
         movieImageView.clipsToBounds = true
@@ -73,7 +123,7 @@ class MainMovieTableViewCell: UITableViewCell {
         ])
     }
     
-    private func setupTitleBackground() {
+    private func configureTitleBackground() {
         titleBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         titleBackgroundView.backgroundColor = .black
         NSLayoutConstraint.activate([
@@ -88,7 +138,7 @@ class MainMovieTableViewCell: UITableViewCell {
         //        titleBackgroundView.applyGradient(isVertical: true, colors: [color, .black])
     }
     
-    private func setupMovieTitleLabel() {
+    private func configureMovieTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.numberOfLines = 2
         titleLabel.adjustsFontSizeToFitWidth = true
@@ -106,12 +156,7 @@ class MainMovieTableViewCell: UITableViewCell {
         ])
     }
     
-    private func changeLikeButtonImage() {
-        let buttonImage = UIImage(systemName: isLiked ? "suit.heart.fill" : "suit.heart")
-        likeButton.setBackgroundImage(buttonImage, for: .normal)
-    }
-    
-    private func setupLikeButton() {
+    private func configureLikeButton() {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         // TODO: Verify if is a liked movie
         changeLikeButtonImage()
@@ -127,13 +172,7 @@ class MainMovieTableViewCell: UITableViewCell {
         ])
     }
     
-    @objc private func likeButtonPressed(sender: UIButton!) {
-        isLiked.toggle()
-        print("Like Button Pressed")
-        changeLikeButtonImage()
-    }
-    
-    private func setupTotalLikes() {
+    private func configureTotalLikes() {
         // Image View
         totalLikesImageView.image = UIImage(systemName: "suit.heart.fill")
         totalLikesImageView.tintColor = .white
@@ -152,7 +191,7 @@ class MainMovieTableViewCell: UITableViewCell {
         ])
     }
     
-    private func setupTotalViews() {
+    private func configureTotalViews() {
         // Image View
         totalViewsImageView.image = UIImage(systemName: "play.tv.fill")
         totalViewsImageView.tintColor = .white
