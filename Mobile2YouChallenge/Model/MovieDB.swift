@@ -9,14 +9,14 @@ import UIKit
 class MovieDB {
     
     static let shared = MovieDB()
-    private var genres = [Genre]()
+    var genres = [Genre]()
     
     private init() {
         
     }
     
     // Genres Request
-    func getGenres(completion: @escaping(Error?) -> Void) {
+    func fetchGenres(completion: @escaping(Error?) -> Void) {
         guard let url = URL(string: "https://api.themoviedb.org/3/genre/movie/list?api_key=526413961b6de91fefe105d4abb81eea&language=pt-BR") else { return }
         
         URLSession.shared.dataTask(with: url) { [weak self] data, _, error in

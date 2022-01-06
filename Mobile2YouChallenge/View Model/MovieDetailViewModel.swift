@@ -31,7 +31,7 @@ final class MovieDetailViewModel: NSObject {
     
     // MARK: - Genres
     private func getGenres() {
-        MovieDB.shared.getGenres { [weak self] _ in
+        MovieDB.shared.fetchGenres { [weak self] _ in
             guard let self = self else { return }
             // Main Movie Essential Information
             self.getMainMovie()

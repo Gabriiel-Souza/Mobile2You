@@ -42,12 +42,39 @@ class SimilarMoviesTableViewCell: UITableViewCell {
     }
     
     func setupMovieData(movie: SimilarMovie?) {
-        let movieYear = movie?.release_date.components(separatedBy: "-").first
+        guard let movie = movie else { return }
+        let movieYear = movie.release_date.components(separatedBy: "-").first
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.titleLabel.text = movie?.title
+            self.titleLabel.text = movie.title
             
-            self.informationLabel.text = "\(movieYear ?? "") Drama, Fantasy"
+            var genresID = [Int]()
+            for i in 0..<min(movie.genre_ids.count-1, 3) {
+                genresID.append(movie.genre_ids[i])
+            }
+            
+            var genres = [Genre]()
+            genresID.forEach { id in
+                let validGenre = MovieDB.shared.genres.first { genre in
+                    genre.id == id
+                }
+                if let validGenre = validGenre {
+                    genres.append(validGenre)
+                }
+            }
+            
+            var element = 0
+            var genresDescription = ""
+            genres.forEach { genre in
+                if element > 0 {
+                    genresDescription += ", "
+                }
+                genresDescription += genre.name
+                element += 1
+            }
+            
+            
+            self.informationLabel.text = "\(movieYear ?? "") \(genresDescription)"
         }
         
     }
@@ -57,7 +84,7 @@ class SimilarMoviesTableViewCell: UITableViewCell {
             guard let self = self else { return }
             self.movieImageView.image = image
         }
-    }    
+    }
 }
 
 // MARK: - Constraints/Configs
