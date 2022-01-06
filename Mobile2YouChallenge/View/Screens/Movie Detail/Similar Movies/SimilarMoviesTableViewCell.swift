@@ -52,6 +52,16 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         
     }
     
+    func updateMovieImage(_ image: UIImage?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.movieImageView.image = image
+        }
+    }    
+}
+
+// MARK: - Constraints/Configs
+extension SimilarMoviesTableViewCell {
     private func configureImage() {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
         movieImageView.backgroundColor = .gray

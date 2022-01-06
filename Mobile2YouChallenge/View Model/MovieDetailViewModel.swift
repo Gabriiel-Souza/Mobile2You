@@ -9,14 +9,18 @@ import UIKit
 
 protocol MovieDetailDelegate: AnyObject {
     func refreshTableView()
+    func refreshRowsAt(_ indexPathArray: [IndexPath])
 }
 
 final class MovieDetailViewModel: NSObject {
     private weak var delegate: MovieDetailDelegate?
+    
     private let movieID: Int
     private var mainMovie: MainMovie?
     private var mainMovieImage: UIImage?
+    
     private var similarMovies = [SimilarMovie]()
+    private var similarMoviesImages = [Int : UIImage?]()
     
     init(delegate: MovieDetailDelegate, movieID: Int) {
         self.movieID = movieID
@@ -26,7 +30,6 @@ final class MovieDetailViewModel: NSObject {
     }
     
     // MARK: - Genres
-    
     private func getGenres() {
         MovieDB.shared.getGenres { [weak self] _ in
             guard let self = self else { return }
@@ -43,8 +46,10 @@ final class MovieDetailViewModel: NSObject {
                 let movie = try result.get()
                 self.mainMovie = movie
                 self.delegate?.refreshTableView()
+                
                 // Similar Movies Information
                 self.getSimilarMovies()
+                
                 // Update image after set essential data
                 if let imagePath = movie.poster_path {
                     self.getMainMovieImage(from: imagePath)
@@ -57,10 +62,9 @@ final class MovieDetailViewModel: NSObject {
     }
     
     private func getMainMovieImage(from imagePath: String) {
-        MovieDB.shared.getImageData(from: imagePath) { [weak self] data, _, error in
+        getImage(from: imagePath) { [weak self] image in
             guard let self = self else { return }
-            guard error == nil, let data = data else { return }
-            self.mainMovieImage = UIImage(data: data)
+            self.mainMovieImage = image
             self.delegate?.refreshTableView()
         }
     }
@@ -73,9 +77,37 @@ final class MovieDetailViewModel: NSObject {
                 self.similarMovies = try result.get()
                 self.delegate?.refreshTableView()
                 
+                // Update image after set essential data
+                var row = 1
+                self.similarMovies.forEach { [weak self] movie in
+                    guard let self = self else { return }
+                    if let posterPath = movie.poster_path {
+                        self.getSimilarMovieImage(from: posterPath, forRow: row)
+                    }
+                    row += 1
+                }
+                
             } catch {
                 print(error.localizedDescription)
             }
+        }
+    }
+    
+    private func getSimilarMovieImage(from imagePath: String, forRow: Int) {
+        getImage(from: imagePath) { [weak self] image in
+            guard let self = self else { return }
+            self.similarMoviesImages[forRow] = image
+            self.delegate?.refreshRowsAt([IndexPath(row: forRow, section: 0)])
+        }
+    }
+    
+    private func getImage(from imagePath: String, completion: @escaping(UIImage?) -> Void) {
+        MovieDB.shared.getImageData(from: imagePath) { data, _, error in
+            guard error == nil, let data = data else {
+                completion(nil)
+                return
+            }
+            completion(UIImage(data: data))
         }
     }
 }
@@ -102,6 +134,9 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
         } else {
             let index = indexPath.row-1
             let similarMovieCell = SimilarMoviesTableViewCell(movie: similarMovies[index])
+            if let image = similarMoviesImages[indexPath.row] {
+                similarMovieCell.updateMovieImage(image)
+            }
             return similarMovieCell
         }
     }
