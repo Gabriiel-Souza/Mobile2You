@@ -63,6 +63,14 @@
 			path = Defaults;
 			sourceTree = "<group>";
 		};
+		B8807A052786885600DB0AB7 /* Similar Movies */ = {
+			isa = PBXGroup;
+			children = (
+				B8B22BA6278503DC00499840 /* SimilarMoviesTableViewCell.swift */,
+			);
+			path = "Similar Movies";
+			sourceTree = "<group>";
+		};
 		B8A4F9F327855063001FF5B3 /* Main Movie */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,7 +185,7 @@
 			children = (
 				B8B22B802784DCCC00499840 /* MovieDetailViewController.swift */,
 				B8A4F9F327855063001FF5B3 /* Main Movie */,
-				B8B22BA6278503DC00499840 /* SimilarMoviesTableViewCell.swift */,
+				B8807A052786885600DB0AB7 /* Similar Movies */,
 			);
 			path = "Movie Detail";
 			sourceTree = "<group>";

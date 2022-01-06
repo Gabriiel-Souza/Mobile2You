@@ -15,34 +15,44 @@ class SimilarMoviesTableViewCell: UITableViewCell {
     private let titleLabel = UILabel()
     private let informationLabel = UILabel()
     private lazy var MovieLabelStackView: UIStackView = {
-        let stackView = createStackView(with: [titleLabel, informationLabel], axis: .vertical)
+        let stackView = createStackView(with: [titleLabel, informationLabel],
+                                        axis: .vertical)
         return stackView
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    init(movie: Movie?) {
+        super.init(style: .default, reuseIdentifier: "SimilarMoviesTableViewCell")
+        selectionStyle = .none
         backgroundColor = .black
         selectionStyle = .none
         
+        // Subviews
         contentView.addSubview(movieImageView)
         contentView.addSubview(MovieLabelStackView)
         
-        setupMovieData()
-        setupImage()
-        setupMovieLabels()
+        // Initial Configuration
+        setupMovieData(movie: movie)
+        configureImage()
+        configureMovieLabels()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupMovieData() {
-        movieImageView.image = UIImage(named: "TheJokerPoster")
-        titleLabel.text = "The Joker"
-        informationLabel.text = "1990 Drama, Fantasy"
+    func setupMovieData(movie: Movie?) {
+        let movieYear = movie?.release_date.components(separatedBy: "-").first
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.titleLabel.text = movie?.title
+            
+            self.informationLabel.text = "\(movieYear ?? "") Drama, Fantasy"
+        }
+        
     }
     
-    private func setupImage() {
+    private func configureImage() {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
         movieImageView.backgroundColor = .gray
         movieImageView.contentMode = .scaleAspectFill
@@ -55,7 +65,7 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         ])
     }
     
-    private func setupMovieLabels() {
+    private func configureMovieLabels() {
         MovieLabelStackView.alignment = .leading
         
         titleLabel.font = UIFont.preferredFont(forTextStyle: .body).bold

@@ -9,6 +9,8 @@ import UIKit
 
 class MainMovieTableViewCell: UITableViewCell {
     
+    static let reuseIdentifier = "MainMovieTableViewCell"
+    
     private var movieImageView = UIImageView()
     
     private var isLiked = true
@@ -46,6 +48,7 @@ class MainMovieTableViewCell: UITableViewCell {
         
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

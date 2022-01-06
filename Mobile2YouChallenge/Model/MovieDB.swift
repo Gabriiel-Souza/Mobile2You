@@ -25,8 +25,8 @@ class MovieDB {
                 return
             }
             do {
-                let movies = try JSONDecoder().decode(MoviesResult.self, from: data)
-                if let movie = movies.results.first {
+                let moviesResult = try JSONDecoder().decode(MoviesResult.self, from: data)
+                if let movie = moviesResult.results.first {
                     completion(.success(movie))
                 } else {
                     completion(.failure(APIError.resultEmpty))
@@ -36,6 +36,23 @@ class MovieDB {
             }
         }.resume()
         
+    }
+    
+    func getSimilarMovies(id: Int, completion: @escaping(Result<[Movie], Error>) -> Void) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(id)/similar?api_key=526413961b6de91fefe105d4abb81eea&language=pt-BR") else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard error == nil, let data = data else {
+                completion(.failure(error!))
+                return
+            }
+            do {
+                let moviesResult = try JSONDecoder().decode(MoviesResult.self, from: data)
+                completion(.success(moviesResult.results))
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
     }
     
     // Images Requests
