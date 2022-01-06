@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let navController = UINavigationController(rootViewController: MovieDetailViewController())
+        let navController = UINavigationController(rootViewController: MovieDetailViewController(movieTitle: "Spider Man No Way Home"))
         navController.navigationBar.prefersLargeTitles = false
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene

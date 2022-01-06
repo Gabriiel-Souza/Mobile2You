@@ -10,10 +10,11 @@ import UIKit
 class MovieDetailViewController: UIViewController, MovieDetailDelegate {
     
     var detailTableView = UITableView()
+    let movieTitle: String
     var viewModel: MovieDetailViewModel?
     
-    
-    init() {
+    init(movieTitle: String) {
+        self.movieTitle = movieTitle
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -25,10 +26,11 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .purple
-        setupNavBar()
+        configureNavBar()
         
         detailTableView.contentInsetAdjustmentBehavior = .never
-        viewModel = MovieDetailViewModel(delegate: self)
+        viewModel = MovieDetailViewModel(delegate: self,
+                                         movieTitle: movieTitle)
         
         setupTableView()
         
@@ -37,18 +39,8 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
         setupConstraints()
     }
     
-    private func setupTableView() {
-        detailTableView.frame = view.bounds
-        detailTableView.delaysContentTouches = false
-        view.addSubview(detailTableView)
-        
-        // Delegates
-        detailTableView.delegate = viewModel
-        detailTableView.dataSource = viewModel
-        
-    }
-    
-    private func setupNavBar() {
+    // MARK: - Navigation Bar
+    private func configureNavBar() {
         var backImageConfig = UIButton.Configuration.plain()
         let image = UIImage(systemName: "chevron.backward")
         backImageConfig.image = image
@@ -63,9 +55,9 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
         let menuBarItem = UIBarButtonItem(customView: backButton)
-                menuBarItem.customView?.translatesAutoresizingMaskIntoConstraints = false
-                menuBarItem.customView?.heightAnchor.constraint(equalToConstant: size).isActive = true
-                menuBarItem.customView?.widthAnchor.constraint(equalToConstant: size).isActive = true
+        menuBarItem.customView?.translatesAutoresizingMaskIntoConstraints = false
+        menuBarItem.customView?.heightAnchor.constraint(equalToConstant: size).isActive = true
+        menuBarItem.customView?.widthAnchor.constraint(equalToConstant: size).isActive = true
         
         navigationItem.leftBarButtonItem = menuBarItem
     }
@@ -74,7 +66,29 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
         print("Back Button Pressed")
     }
     
+    // MARK: - Setups
+    private func setupTableView() {
+        detailTableView.frame = view.bounds
+        detailTableView.delaysContentTouches = false
+        view.addSubview(detailTableView)
+        
+        // Delegates
+        detailTableView.delegate = viewModel
+        detailTableView.dataSource = viewModel
+    }
+
     private func setupConstraints() {
         detailTableView.edgesConstraints(to: view)
+    }
+}
+
+// MARK: - Movie Detail Delegate
+extension MovieDetailViewController {
+    
+    func refreshTableView() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.detailTableView.reloadData()
+        }
     }
 }

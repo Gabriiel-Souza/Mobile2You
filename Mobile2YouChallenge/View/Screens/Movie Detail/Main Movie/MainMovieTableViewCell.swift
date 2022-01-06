@@ -9,8 +9,6 @@ import UIKit
 
 class MainMovieTableViewCell: UITableViewCell {
     
-    static let reuseIdentifier = "MainMovieTableViewCell"
-    
     private var movieImageView = UIImageView()
     
     private var isLiked = true
@@ -27,8 +25,8 @@ class MainMovieTableViewCell: UITableViewCell {
     private var totalViewsLabel = UILabel()
     
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    init(movie: Movie?) {
+        super.init(style: .default, reuseIdentifier: "MainMovieTableViewCell")
         selectionStyle = .none
         
         contentView.addSubview(movieImageView)
@@ -36,7 +34,7 @@ class MainMovieTableViewCell: UITableViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(likeButton)
         
-        setupMovieData()
+        setupMovieData(movie)
         setupImage()
         setupTitleBackground()
         setupMovieTitleLabel()
@@ -51,12 +49,37 @@ class MainMovieTableViewCell: UITableViewCell {
     }
     
     // TODO: - Set real data to variables
-    func setupMovieData() {
-        movieImageView.image = UIImage(named: "TheJokerPoster")
-        titleLabel.text = "The Joker"
+    private func setupMovieData(_ movie: Movie?) {
+        guard let movie = movie else { return }
         
-        totalLikesLabel.text = "1.2K Likes"
-        totalViewsLabel.text = "120.000 Views"
+        // Total Likes
+        var totalVotesCount = Double(movie.vote_count)
+        var isMoreThanThousand = false
+        
+        if totalVotesCount > 1000 {
+            totalVotesCount /= 1000
+            isMoreThanThousand = true
+        }
+        
+        var totalVotes = String(format: "%.1f", totalVotesCount)
+        
+        if isMoreThanThousand {
+            totalVotes+="K"
+        }
+        
+        totalVotes += " Likes"
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            // Title
+            self.titleLabel.text = movie.title
+            
+            self.totalLikesLabel.text = totalVotes
+            
+            // Total Views
+            self.totalViewsLabel.text = "\(movie.popularity) Views"
+        }
     }
     
     private func setupImage() {

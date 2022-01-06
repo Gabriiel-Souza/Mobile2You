@@ -8,15 +8,30 @@
 import UIKit
 
 protocol MovieDetailDelegate: AnyObject {
-    
+    func refreshTableView()
 }
 
 final class MovieDetailViewModel: NSObject {
-    weak var delegate: MovieDetailDelegate?
+    private weak var delegate: MovieDetailDelegate?
+    private var mainMovie: Movie?
+    private var mainMovieImage: UIImage?
+    private var similarMovies: [Movie]?
     
-    init(delegate: MovieDetailDelegate) {
+    init(delegate: MovieDetailDelegate, movieTitle: String) {
+        super.init()
         self.delegate = delegate
-        
+        // Essential information First
+        MovieDB.shared.getMovie(name: movieTitle) { [weak self] result in
+            guard let self = self else { return }
+            do {
+                let movie = try result.get()
+                self.mainMovie = movie
+                self.delegate?.refreshTableView()
+                
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 
@@ -31,7 +46,9 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // TODO: Change the values to Custom Cells
         if indexPath.row == 0 {
-            return MainMovieTableViewCell(style: .default, reuseIdentifier: MainMovieTableViewCell.reuseIdentifier)
+            let mainMovieCell = MainMovieTableViewCell(movie: mainMovie)
+            
+            return mainMovieCell
         } else {
             return SimilarMoviesTableViewCell(style: .default, reuseIdentifier: SimilarMoviesTableViewCell.reuseIdentifier)
         }
