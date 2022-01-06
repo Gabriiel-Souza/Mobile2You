@@ -13,20 +13,31 @@ protocol MovieDetailDelegate: AnyObject {
 
 final class MovieDetailViewModel: NSObject {
     private weak var delegate: MovieDetailDelegate?
-    private var mainMovie: Movie?
+    private let movieID: Int
+    private var mainMovie: MainMovie?
     private var mainMovieImage: UIImage?
-    private var similarMovies = [Movie]()
+    private var similarMovies = [SimilarMovie]()
     
-    init(delegate: MovieDetailDelegate, movieTitle: String) {
+    init(delegate: MovieDetailDelegate, movieID: Int) {
+        self.movieID = movieID
         super.init()
         self.delegate = delegate
-        // Main Movie Essential Information
-        getMainMovie(movieTitle: movieTitle)
+        getGenres()
+    }
+    
+    // MARK: - Genres
+    
+    private func getGenres() {
+        MovieDB.shared.getGenres { [weak self] _ in
+            guard let self = self else { return }
+            // Main Movie Essential Information
+            self.getMainMovie()
+        }
     }
     
     // MARK: - Main Movie
-    private func getMainMovie(movieTitle: String) {
-        MovieDB.shared.getMovie(name: movieTitle) { [weak self] result in
+    private func getMainMovie() {
+        MovieDB.shared.getMovie(id: movieID) { [weak self] result in
             guard let self = self else { return }
             do {
                 let movie = try result.get()
@@ -35,7 +46,9 @@ final class MovieDetailViewModel: NSObject {
                 // Similar Movies Information
                 self.getSimilarMovies()
                 // Update image after set essential data
-                self.getMainMovieImage()
+                if let imagePath = movie.poster_path {
+                    self.getMainMovieImage(from: imagePath)
+                }
                 
             } catch {
                 print(error.localizedDescription)
@@ -43,9 +56,8 @@ final class MovieDetailViewModel: NSObject {
         }
     }
     
-    private func getMainMovieImage() {
-        guard let mainMovie = mainMovie else { return }
-        MovieDB.shared.getImageData(from: mainMovie.poster_path) { [weak self] data, _, error in
+    private func getMainMovieImage(from imagePath: String) {
+        MovieDB.shared.getImageData(from: imagePath) { [weak self] data, _, error in
             guard let self = self else { return }
             guard error == nil, let data = data else { return }
             self.mainMovieImage = UIImage(data: data)
@@ -55,8 +67,7 @@ final class MovieDetailViewModel: NSObject {
     
     //MARK: - Similar Movies
     private func getSimilarMovies() {
-        guard let mainMovie = mainMovie else { return }
-        MovieDB.shared.getSimilarMovies(id: mainMovie.id) { [weak self] result in
+        MovieDB.shared.getSimilarMovies(id: movieID) { [weak self] result in
             guard let self = self else { return }
             do {
                 self.similarMovies = try result.get()
@@ -73,7 +84,10 @@ final class MovieDetailViewModel: NSObject {
 extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // TODO: Change the value for the API result array count
+
+        if mainMovie == nil {
+            return 0
+        }
         return similarMovies.count + 1
     }
     

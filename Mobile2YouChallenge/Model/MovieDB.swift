@@ -9,15 +9,35 @@ import UIKit
 class MovieDB {
     
     static let shared = MovieDB()
+    private var genres = [Genre]()
     
     private init() {
         
     }
     
+    // Genres Request
+    func getGenres(completion: @escaping(Error?) -> Void) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/genre/movie/list?api_key=526413961b6de91fefe105d4abb81eea&language=pt-BR") else { return }
+        
+        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+            guard let self = self, error == nil, let data = data else {
+                completion(error)
+                return
+            }
+            do {
+                let genresFetched = try JSONDecoder().decode(Genres.self, from: data)
+                print(genresFetched)
+                self.genres = genresFetched.genres
+                completion(nil)
+            } catch {
+                completion(error)
+            }
+        }.resume()
+    }
+    
     // Movies Requests
-    func getMovie(name: String, completion: @escaping(Result<Movie, Error>) -> Void) {
-        let nameFormatted = name.replacingOccurrences(of: " ", with: "+")
-        guard let url = URL(string: "https://api.themoviedb.org/3/search/movie?api_key=526413961b6de91fefe105d4abb81eea&query=\(nameFormatted)&language=pt-BR") else { return }
+    func getMovie(id: Int, completion: @escaping(Result<MainMovie, Error>) -> Void) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(id)?api_key=526413961b6de91fefe105d4abb81eea&language=pt-BR") else { return }
         
         URLSession.shared.dataTask(with: url) { data, _, error in
             guard error == nil, let data = data else {
@@ -25,12 +45,8 @@ class MovieDB {
                 return
             }
             do {
-                let moviesResult = try JSONDecoder().decode(MoviesResult.self, from: data)
-                if let movie = moviesResult.results.first {
-                    completion(.success(movie))
-                } else {
-                    completion(.failure(APIError.resultEmpty))
-                }
+                let movie = try JSONDecoder().decode(MainMovie.self, from: data)
+                completion(.success(movie))
             } catch {
                 completion(.failure(error))
             }
@@ -38,7 +54,7 @@ class MovieDB {
         
     }
     
-    func getSimilarMovies(id: Int, completion: @escaping(Result<[Movie], Error>) -> Void) {
+    func getSimilarMovies(id: Int, completion: @escaping(Result<[SimilarMovie], Error>) -> Void) {
         guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(id)/similar?api_key=526413961b6de91fefe105d4abb81eea&language=pt-BR") else { return }
         
         URLSession.shared.dataTask(with: url) { data, _, error in

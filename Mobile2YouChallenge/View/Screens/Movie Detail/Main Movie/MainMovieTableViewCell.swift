@@ -27,7 +27,7 @@ class MainMovieTableViewCell: UITableViewCell {
     private var totalViewsLabel = UILabel()
     
     
-    init(movie: Movie?) {
+    init(movie: MainMovie?) {
         super.init(style: .default, reuseIdentifier: "MainMovieTableViewCell")
         selectionStyle = .none
         
@@ -53,7 +53,7 @@ class MainMovieTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupMovieData(_ movie: Movie?) {
+    private func setupMovieData(_ movie: MainMovie?) {
         guard let movie = movie else { return }
         
         // Format total votes number

@@ -20,7 +20,7 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         return stackView
     }()
     
-    init(movie: Movie?) {
+    init(movie: SimilarMovie?) {
         super.init(style: .default, reuseIdentifier: "SimilarMoviesTableViewCell")
         selectionStyle = .none
         backgroundColor = .black
@@ -41,7 +41,7 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupMovieData(movie: Movie?) {
+    func setupMovieData(movie: SimilarMovie?) {
         let movieYear = movie?.release_date.components(separatedBy: "-").first
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }

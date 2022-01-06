@@ -10,11 +10,11 @@ import UIKit
 class MovieDetailViewController: UIViewController, MovieDetailDelegate {
     
     var detailTableView = UITableView()
-    let movieTitle: String
+    let movieID: Int
     var viewModel: MovieDetailViewModel?
     
-    init(movieTitle: String) {
-        self.movieTitle = movieTitle
+    init(movieID: Int) {
+        self.movieID = movieID
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -30,7 +30,7 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
         
         detailTableView.contentInsetAdjustmentBehavior = .never
         viewModel = MovieDetailViewModel(delegate: self,
-                                         movieTitle: movieTitle)
+                                         movieID: movieID)
         
         setupTableView()
         
