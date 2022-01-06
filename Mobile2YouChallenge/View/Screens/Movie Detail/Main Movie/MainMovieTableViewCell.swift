@@ -29,18 +29,20 @@ class MainMovieTableViewCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: "MainMovieTableViewCell")
         selectionStyle = .none
         
+        // Subviews
         contentView.addSubview(movieImageView)
         contentView.addSubview(titleBackgroundView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(likeButton)
         
+        // Initial Configuration
         setupMovieData(movie)
-        setupImage()
-        setupTitleBackground()
-        setupMovieTitleLabel()
-        setupLikeButton()
-        setupTotalLikes()
-        setupTotalViews()
+        configureImage()
+        configureTitleBackground()
+        configureMovieTitleLabel()
+        configureLikeButton()
+        configureTotalLikes()
+        configureTotalViews()
         
     }
     
@@ -48,11 +50,10 @@ class MainMovieTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // TODO: - Set real data to variables
     private func setupMovieData(_ movie: Movie?) {
         guard let movie = movie else { return }
         
-        // Total Likes
+        // Format total votes number
         var totalVotesCount = Double(movie.vote_count)
         var isMoreThanThousand = false
         
@@ -75,6 +76,7 @@ class MainMovieTableViewCell: UITableViewCell {
             // Title
             self.titleLabel.text = movie.title
             
+            // Total Likes
             self.totalLikesLabel.text = totalVotes
             
             // Total Views
@@ -82,7 +84,29 @@ class MainMovieTableViewCell: UITableViewCell {
         }
     }
     
-    private func setupImage() {
+    func updateMovieImage(_ image: UIImage?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.movieImageView.image = image
+        }
+    }
+    
+    private func changeLikeButtonImage() {
+        let buttonImage = UIImage(systemName: isLiked ? "suit.heart.fill" : "suit.heart")
+        likeButton.setBackgroundImage(buttonImage, for: .normal)
+    }
+    
+    @objc private func likeButtonPressed(sender: UIButton!) {
+        isLiked.toggle()
+        print("Like Button Pressed")
+        changeLikeButtonImage()
+    }
+    
+}
+
+// MARK: - Constraints/Configs
+extension MainMovieTableViewCell {
+    private func configureImage() {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
         movieImageView.backgroundColor = .gray
         movieImageView.clipsToBounds = true
@@ -96,7 +120,7 @@ class MainMovieTableViewCell: UITableViewCell {
         ])
     }
     
-    private func setupTitleBackground() {
+    private func configureTitleBackground() {
         titleBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         titleBackgroundView.backgroundColor = .black
         NSLayoutConstraint.activate([
@@ -111,7 +135,7 @@ class MainMovieTableViewCell: UITableViewCell {
         //        titleBackgroundView.applyGradient(isVertical: true, colors: [color, .black])
     }
     
-    private func setupMovieTitleLabel() {
+    private func configureMovieTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.numberOfLines = 2
         titleLabel.adjustsFontSizeToFitWidth = true
@@ -129,12 +153,7 @@ class MainMovieTableViewCell: UITableViewCell {
         ])
     }
     
-    private func changeLikeButtonImage() {
-        let buttonImage = UIImage(systemName: isLiked ? "suit.heart.fill" : "suit.heart")
-        likeButton.setBackgroundImage(buttonImage, for: .normal)
-    }
-    
-    private func setupLikeButton() {
+    private func configureLikeButton() {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         // TODO: Verify if is a liked movie
         changeLikeButtonImage()
@@ -150,13 +169,7 @@ class MainMovieTableViewCell: UITableViewCell {
         ])
     }
     
-    @objc private func likeButtonPressed(sender: UIButton!) {
-        isLiked.toggle()
-        print("Like Button Pressed")
-        changeLikeButtonImage()
-    }
-    
-    private func setupTotalLikes() {
+    private func configureTotalLikes() {
         // Image View
         totalLikesImageView.image = UIImage(systemName: "suit.heart.fill")
         totalLikesImageView.tintColor = .white
@@ -175,7 +188,7 @@ class MainMovieTableViewCell: UITableViewCell {
         ])
     }
     
-    private func setupTotalViews() {
+    private func configureTotalViews() {
         // Image View
         totalViewsImageView.image = UIImage(systemName: "play.tv.fill")
         totalViewsImageView.tintColor = .white

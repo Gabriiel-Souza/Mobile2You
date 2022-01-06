@@ -28,6 +28,13 @@ final class MovieDetailViewModel: NSObject {
                 self.mainMovie = movie
                 self.delegate?.refreshTableView()
                 
+                // Update image after set essential data
+                MovieDB.shared.getImageData(from: movie.poster_path) { [weak self] data, _, error in
+                    guard let self = self else { return }
+                    guard error == nil, let data = data else { return }
+                    self.mainMovieImage = UIImage(data: data)
+                    self.delegate?.refreshTableView()
+                }
             } catch {
                 print(error.localizedDescription)
             }
@@ -47,6 +54,9 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
         // TODO: Change the values to Custom Cells
         if indexPath.row == 0 {
             let mainMovieCell = MainMovieTableViewCell(movie: mainMovie)
+            if mainMovieImage != nil {
+                mainMovieCell.updateMovieImage(mainMovieImage)
+            }
             
             return mainMovieCell
         } else {

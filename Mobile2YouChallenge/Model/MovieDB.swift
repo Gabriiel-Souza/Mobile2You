@@ -35,5 +35,13 @@ class MovieDB {
                 completion(.failure(error))
             }
         }.resume()
+        
+    }
+    
+    // Images Requests
+    func getImageData(from imagePath: String?, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        guard let path = imagePath, let url = URL(string: "https://image.tmdb.org/t/p/original/\(path)") else { return }
+        
+        return URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
 }
