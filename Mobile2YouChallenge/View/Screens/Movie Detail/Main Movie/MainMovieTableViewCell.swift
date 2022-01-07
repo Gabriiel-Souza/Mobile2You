@@ -57,18 +57,15 @@ class MainMovieTableViewCell: UITableViewCell {
         guard let movie = movie else { return }
         
         // Format total votes number
-        var totalVotesCount = Double(movie.vote_count)
-        var isMoreThanThousand = false
+        var totalVotes = ""
+        let totalVotesCount = movie.vote_count
         
         if totalVotesCount > 1000 {
-            totalVotesCount /= 1000
-            isMoreThanThousand = true
-        }
-        
-        var totalVotes = String(format: "%.1f", totalVotesCount)
-        
-        if isMoreThanThousand {
-            totalVotes+="K"
+            var doubleCount = Double(totalVotesCount)
+            doubleCount /= 1000
+            totalVotes = String(format: "%.1fK", doubleCount)
+        } else {
+            totalVotes = "\(totalVotesCount)"
         }
         
         totalVotes += " Likes"
@@ -142,7 +139,7 @@ extension MainMovieTableViewCell {
         titleLabel.textAlignment = .left
         titleLabel.textColor = .label
         
-        let font = UIFont.preferredFont(forTextStyle: .title1).withSize(28)
+        let font = UIFont.preferredFont(forTextStyle: .title1).withSize(25)
         titleLabel.font = font.bold
         
         NSLayoutConstraint.activate([
