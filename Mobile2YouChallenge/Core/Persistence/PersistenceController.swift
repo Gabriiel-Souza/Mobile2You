@@ -23,7 +23,7 @@ struct PersistenceController {
         })
         return container
     }()
-
+    
     private init() {
         context = persistentContainer?.viewContext
     }
@@ -32,22 +32,34 @@ struct PersistenceController {
         do {
             let fetchRequest: NSFetchRequest<FavoriteMovie>
             fetchRequest = FavoriteMovie.fetchRequest()
-
+            
             fetchRequest.predicate = NSPredicate(
-                format: "id LIKE %@", id
+                format: "id LIKE %@", "\(id)"
             )
-
+            
             // Perform the fetch request to get the objects
             // matching the predicate
             let movie = try context?.fetch(fetchRequest).first
             return movie
         } catch {
-            print("Error in Player Data Fetch Request: \(error.localizedDescription)")
+            print("Error in Favorite Movie Fetch Request: \(error.localizedDescription)")
             return nil
         }
     }
     
-    func saveContext() {
+    func deleteMovie(_ movie: FavoriteMovie) {
+        context?.delete(movie)
+        save()
+    }
+    
+    func addMovie(id: Int) {
+        guard let context = context else { return }
+        let newMovie = FavoriteMovie(context: context)
+        newMovie.id = Int32(id)
+        save()
+    }
+    
+    private func save() {
         if let context = persistentContainer?.viewContext {
             if context.hasChanges {
                 do {

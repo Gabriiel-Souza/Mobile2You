@@ -17,7 +17,6 @@ extension FavoriteMovie {
     }
 
     @NSManaged public var id: Int32
-    @NSManaged public var isFavorite: Bool
 
 }
 
