@@ -13,7 +13,8 @@ class MainMovieTableViewCell: UITableViewCell {
     
     private var movieImageView = FetchableImageView()
     
-    private var isLiked = true
+    private var isLiked = false
+    private var movieId: Int?
     
     // Title Background
     private var titleBackgroundView = UIView()
@@ -38,7 +39,9 @@ class MainMovieTableViewCell: UITableViewCell {
         contentView.addSubview(likeButton)
         
         // Initial Configuration
-        setupMovieData(movie)
+        if let movie = movie {
+            setupMovieData(movie)
+        }
         configureImage()
         configureTitleBackground()
         configureMovieTitleLabel()
@@ -53,9 +56,9 @@ class MainMovieTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupMovieData(_ movie: MainMovie?) {
-        guard let movie = movie else { return }
-        
+    private func setupMovieData(_ movie: MainMovie) {
+        movieId = movie.id
+        isLiked = PersistenceController.shared.fetchFavoriteMovie(id: movie.id) != nil ? true : false
         // Format total votes number
         var totalVotes = ""
         let totalVotesCount = movie.vote_count
@@ -95,10 +98,16 @@ class MainMovieTableViewCell: UITableViewCell {
     
     @objc private func likeButtonPressed(sender: UIButton!) {
         isLiked.toggle()
-        print("Like Button Pressed")
+        if let movieId = movieId,
+           let movie = PersistenceController.shared.fetchFavoriteMovie(id: movieId) {
+            PersistenceController.shared.deleteMovie(movie)
+        } else {
+            if let movieId = movieId {
+                PersistenceController.shared.addMovie(id: movieId)
+            }
+        }
         changeLikeButtonImage()
     }
-    
 }
 
 // MARK: - Constraints/Configs
