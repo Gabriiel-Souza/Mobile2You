@@ -100,4 +100,15 @@ extension MovieDetailViewController {
         let movieDetailVC = MovieDetailViewController(movieID: movie.id)
         navigationController?.pushViewController(movieDetailVC, animated: true)
     }
+    
+    func scrollViewDidScroll() {
+        let offsetY = detailTableView.contentOffset.y
+        if let mainMovieCell = detailTableView.visibleCells.first as? MainMovieTableViewCell {
+            let x = mainMovieCell.movieImageView.frame.origin.x
+            let w = mainMovieCell.movieImageView.bounds.width
+            let h = mainMovieCell.movieImageView.bounds.height
+            let y = ((offsetY - mainMovieCell.frame.origin.y) / h) * 200
+            mainMovieCell.movieImageView.frame = CGRect(x: x, y: y, width: w, height: h)
+        }
+    }
 }

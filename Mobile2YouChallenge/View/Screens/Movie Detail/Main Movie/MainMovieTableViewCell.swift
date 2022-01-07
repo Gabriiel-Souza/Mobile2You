@@ -11,7 +11,7 @@ class MainMovieTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "MainMovieTableViewCell"
     
-    private var movieImageView = FetchableImageView()
+    var movieImageView = FetchableImageView()
     
     private var isLiked = false
     private var movieId: Int?
@@ -31,6 +31,7 @@ class MainMovieTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        clipsToBounds = true
         
         // Subviews
         contentView.addSubview(movieImageView)
@@ -111,9 +112,9 @@ class MainMovieTableViewCell: UITableViewCell {
 extension MainMovieTableViewCell {
     private func configureImage() {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
+        
         movieImageView.clipsToBounds = true
         movieImageView.contentMode = .scaleAspectFill
-        movieImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         NSLayoutConstraint.activate([
             movieImageView.topAnchor.constraint(equalTo: topAnchor),

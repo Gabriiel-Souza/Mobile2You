@@ -10,6 +10,7 @@ import UIKit
 protocol MovieDetailDelegate: AnyObject {
     func refreshTableView()
     func presentNewMovie(_ movie: SimilarMovie)
+    func scrollViewDidScroll()
 }
 
 final class MovieDetailViewModel: NSObject {
@@ -114,5 +115,9 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
             let index = indexPath.row - 1
             delegate?.presentNewMovie(similarMovies[index])
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegate?.scrollViewDidScroll()
     }
 }
