@@ -15,12 +15,12 @@ struct PersistenceController {
     
     private var persistentContainer: NSPersistentContainer? = {
         let container = NSPersistentContainer(name: "Mobile2YouChallenge")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
+        container.loadPersistentStores { storeDescription, error in
+            if let error = error {
                 print("Can't get persistentContainer, error: \(error.localizedDescription)")
                 return
             }
-        })
+        }
         return container
     }()
     
@@ -28,7 +28,7 @@ struct PersistenceController {
         context = persistentContainer?.viewContext
     }
     
-    func fetchFavoriteMovie(id: Int) -> FavoriteMovie?{
+    func fetchFavoriteMovie(id: Int) -> FavoriteMovie? {
         do {
             let fetchRequest: NSFetchRequest<FavoriteMovie>
             fetchRequest = FavoriteMovie.fetchRequest()

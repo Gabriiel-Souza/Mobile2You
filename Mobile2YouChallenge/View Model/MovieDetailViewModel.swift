@@ -88,7 +88,7 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
         } else {
             let index = indexPath.row-1
             let similarMovieCell = SimilarMoviesTableViewCell(movie: similarMovies[index])
-
+            
             return similarMovieCell
         }
     }

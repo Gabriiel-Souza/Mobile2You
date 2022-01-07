@@ -53,8 +53,8 @@ class FetchableImageView: UIImageView {
                 let data = data,
                 let image = UIImage(data: data)
             else {
-                    print("Error to get image from url: \(url)")
-                    return
+                print("Error to get image from url: \(url)")
+                return
             }
             
             imageCache.setObject(image, forKey: url.absoluteString as AnyObject)
