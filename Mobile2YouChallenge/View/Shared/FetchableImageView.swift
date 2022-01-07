@@ -23,7 +23,6 @@ class FetchableImageView: UIImageView {
             guard let self = self else { return }
             self.loadSpinner.startAnimating()
         }
-        
     }
     
     private func removeSpinner() {
