@@ -11,9 +11,10 @@ class MainMovieTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "MainMovieTableViewCell"
     
-    private var movieImageView = UIImageView()
+    private var movieImageView = FetchableImageView()
     
-    private var isLiked = true
+    private var isLiked = false
+    private var movieId: Int?
     
     // Title Background
     private var titleBackgroundView = UIView()
@@ -38,7 +39,9 @@ class MainMovieTableViewCell: UITableViewCell {
         contentView.addSubview(likeButton)
         
         // Initial Configuration
-        setupMovieData(movie)
+        if let movie = movie {
+            setupMovieData(movie)
+        }
         configureImage()
         configureTitleBackground()
         configureMovieTitleLabel()
@@ -53,22 +56,19 @@ class MainMovieTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupMovieData(_ movie: MainMovie?) {
-        guard let movie = movie else { return }
-        
+    private func setupMovieData(_ movie: MainMovie) {
+        movieId = movie.id
+        isLiked = PersistenceController.shared.fetchFavoriteMovie(id: movie.id) != nil ? true : false
         // Format total votes number
-        var totalVotesCount = Double(movie.vote_count)
-        var isMoreThanThousand = false
+        var totalVotes = ""
+        let totalVotesCount = movie.vote_count
         
         if totalVotesCount > 1000 {
-            totalVotesCount /= 1000
-            isMoreThanThousand = true
-        }
-        
-        var totalVotes = String(format: "%.1f", totalVotesCount)
-        
-        if isMoreThanThousand {
-            totalVotes+="K"
+            var doubleCount = Double(totalVotesCount)
+            doubleCount /= 1000
+            totalVotes = String(format: "%.1fK", doubleCount)
+        } else {
+            totalVotes = "\(totalVotesCount)"
         }
         
         totalVotes += " Likes"
@@ -85,12 +85,9 @@ class MainMovieTableViewCell: UITableViewCell {
             // Total Views
             self.totalViewsLabel.text = "\(movie.popularity) Views"
         }
-    }
-    
-    func updateMovieImage(_ image: UIImage?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.movieImageView.image = image
+        
+        if let imagePath = movie.poster_path {
+            movieImageView.getImage(from: imagePath)
         }
     }
     
@@ -101,10 +98,16 @@ class MainMovieTableViewCell: UITableViewCell {
     
     @objc private func likeButtonPressed(sender: UIButton!) {
         isLiked.toggle()
-        print("Like Button Pressed")
+        if let movieId = movieId,
+           let movie = PersistenceController.shared.fetchFavoriteMovie(id: movieId) {
+            PersistenceController.shared.deleteMovie(movie)
+        } else {
+            if let movieId = movieId {
+                PersistenceController.shared.addMovie(id: movieId)
+            }
+        }
         changeLikeButtonImage()
     }
-    
 }
 
 // MARK: - Constraints/Configs
@@ -125,7 +128,7 @@ extension MainMovieTableViewCell {
     
     private func configureTitleBackground() {
         titleBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        titleBackgroundView.backgroundColor = .black
+        titleBackgroundView.backgroundColor = .systemBackground
         NSLayoutConstraint.activate([
             titleBackgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
             titleBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -145,7 +148,7 @@ extension MainMovieTableViewCell {
         titleLabel.textAlignment = .left
         titleLabel.textColor = .label
         
-        let font = UIFont.preferredFont(forTextStyle: .title1).withSize(28)
+        let font = UIFont.preferredFont(forTextStyle: .title1).withSize(25)
         titleLabel.font = font.bold
         
         NSLayoutConstraint.activate([
@@ -160,7 +163,7 @@ extension MainMovieTableViewCell {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         // TODO: Verify if is a liked movie
         changeLikeButtonImage()
-        likeButton.tintColor = .white
+        likeButton.tintColor = .label
         likeButton.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         
         
@@ -175,7 +178,7 @@ extension MainMovieTableViewCell {
     private func configureTotalLikes() {
         // Image View
         totalLikesImageView.image = UIImage(systemName: "suit.heart.fill")
-        totalLikesImageView.tintColor = .white
+        totalLikesImageView.tintColor = .label
         
         // Label
         let font = UIFont.preferredFont(forTextStyle: .subheadline)
