@@ -10,7 +10,7 @@ import UIKit
 extension UIView {
     func applyGradient(isVertical: Bool, colors: [UIColor]) {
         layer.sublayers?.filter({ $0 is CAGradientLayer }).forEach({ $0.removeFromSuperlayer() })
-         
+        
         let gradient = CAGradientLayer()
         gradient.colors = colors.map({ $0.cgColor })
         
