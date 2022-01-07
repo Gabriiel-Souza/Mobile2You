@@ -95,7 +95,7 @@ extension MovieDetailViewController {
     func refreshRowsAt(_ indexPathArray: [IndexPath]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.detailTableView.reloadRows(at: indexPathArray, with: .fade)
+            self.detailTableView.reloadRows(at: indexPathArray, with: .none)
         }
     }
 }

@@ -11,7 +11,7 @@ class MainMovieTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "MainMovieTableViewCell"
     
-    private var movieImageView = UIImageView()
+    private var movieImageView = FetchableImageView()
     
     private var isLiked = true
     
@@ -85,12 +85,9 @@ class MainMovieTableViewCell: UITableViewCell {
             // Total Views
             self.totalViewsLabel.text = "\(movie.popularity) Views"
         }
-    }
-    
-    func updateMovieImage(_ image: UIImage?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.movieImageView.image = image
+        
+        if let imagePath = movie.poster_path {
+            movieImageView.getImage(from: imagePath)
         }
     }
     
@@ -125,7 +122,7 @@ extension MainMovieTableViewCell {
     
     private func configureTitleBackground() {
         titleBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        titleBackgroundView.backgroundColor = .black
+        titleBackgroundView.backgroundColor = .systemBackground
         NSLayoutConstraint.activate([
             titleBackgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
             titleBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -160,7 +157,7 @@ extension MainMovieTableViewCell {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         // TODO: Verify if is a liked movie
         changeLikeButtonImage()
-        likeButton.tintColor = .white
+        likeButton.tintColor = .label
         likeButton.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         
         
@@ -175,7 +172,7 @@ extension MainMovieTableViewCell {
     private func configureTotalLikes() {
         // Image View
         totalLikesImageView.image = UIImage(systemName: "suit.heart.fill")
-        totalLikesImageView.tintColor = .white
+        totalLikesImageView.tintColor = .label
         
         // Label
         let font = UIFont.preferredFont(forTextStyle: .subheadline)

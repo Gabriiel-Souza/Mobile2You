@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B83D1C282787A9BE000744AE /* FetchableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83D1C272787A9BE000744AE /* FetchableImageView.swift */; };
 		B88079FF2786579300DB0AB7 /* Movies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88079FE2786579300DB0AB7 /* Movies.swift */; };
 		B8807A01278660F600DB0AB7 /* MovieDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8807A00278660F600DB0AB7 /* MovieDB.swift */; };
 		B8807A0327866CED00DB0AB7 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8807A0227866CED00DB0AB7 /* Error.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B83D1C272787A9BE000744AE /* FetchableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchableImageView.swift; sourceTree = "<group>"; };
 		B88079FE2786579300DB0AB7 /* Movies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movies.swift; sourceTree = "<group>"; };
 		B8807A00278660F600DB0AB7 /* MovieDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDB.swift; sourceTree = "<group>"; };
 		B8807A0227866CED00DB0AB7 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -57,6 +59,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B83D1C262787A999000744AE /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				B83D1C272787A9BE000744AE /* FetchableImageView.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		B8807A0427866CF000DB0AB7 /* Defaults */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +134,7 @@
 		B8B22B942784DD7A00499840 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B83D1C262787A999000744AE /* Shared */,
 				B8B22B9E2785032600499840 /* Screens */,
 			);
 			path = View;
@@ -277,6 +288,7 @@
 				B8A4F9F22785502E001FF5B3 /* UIView+Gradient.swift in Sources */,
 				B8807A0327866CED00DB0AB7 /* Error.swift in Sources */,
 				B8B22B7F2784DCCC00499840 /* SceneDelegate.swift in Sources */,
+				B83D1C282787A9BE000744AE /* FetchableImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
