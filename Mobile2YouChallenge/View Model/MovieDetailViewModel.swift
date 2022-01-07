@@ -18,6 +18,9 @@ final class MovieDetailViewModel: NSObject {
     private let movieID: Int
     private var mainMovie: MainMovie?
     
+    private var mainMovieCellHeight = UIScreen.main.bounds.height * 0.6
+    private var similarMovieCellHeight = UIScreen.main.bounds.height * 0.11
+    
     private var similarMovies = [SimilarMovie]()
     
     init(delegate: MovieDetailDelegate, movieID: Int) {
@@ -99,9 +102,9 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return UIScreen.main.bounds.height * 0.6
+            return mainMovieCellHeight
         } else {
-            return UIScreen.main.bounds.height * 0.11
+            return similarMovieCellHeight
         }
     }
     

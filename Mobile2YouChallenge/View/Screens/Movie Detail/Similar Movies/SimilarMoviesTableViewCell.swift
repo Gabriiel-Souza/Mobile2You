@@ -77,7 +77,7 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         }
         
         if let imagePath = movie.poster_path {
-            movieImageView.getImage(from: imagePath)
+            movieImageView.getImage(from: imagePath, isMainMovie: false)
         }
     }
 }

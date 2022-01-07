@@ -41,8 +41,8 @@ class MainMovieTableViewCell: UITableViewCell {
         // Initial Configuration
         configureImage()
         configureTitleBackground()
-        configureMovieTitleLabel()
         configureLikeButton()
+        configureMovieTitleLabel()
         configureTotalLikes()
         configureTotalViews()
         
@@ -84,7 +84,7 @@ class MainMovieTableViewCell: UITableViewCell {
         }
         
         if let imagePath = movie.poster_path {
-            movieImageView.getImage(from: imagePath)
+            movieImageView.getImage(from: imagePath, isMainMovie: true)
         }
     }
     
@@ -111,9 +111,9 @@ class MainMovieTableViewCell: UITableViewCell {
 extension MainMovieTableViewCell {
     private func configureImage() {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
-        movieImageView.backgroundColor = .gray
         movieImageView.clipsToBounds = true
         movieImageView.contentMode = .scaleAspectFill
+        movieImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         NSLayoutConstraint.activate([
             movieImageView.topAnchor.constraint(equalTo: topAnchor),
@@ -152,7 +152,7 @@ extension MainMovieTableViewCell {
             titleLabel.leadingAnchor.constraint(equalTo: titleBackgroundView.leadingAnchor, constant: 8),
             titleLabel.topAnchor.constraint(equalTo: titleBackgroundView.topAnchor, constant: -2),
             titleLabel.heightAnchor.constraint(equalTo: titleBackgroundView.heightAnchor, multiplier: 0.6),
-            titleLabel.widthAnchor.constraint(equalTo: titleBackgroundView.widthAnchor, multiplier: 0.5)
+            titleLabel.trailingAnchor.constraint(equalTo: likeButton.leadingAnchor, constant: -8)
         ])
     }
     
