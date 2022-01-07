@@ -9,7 +9,7 @@ import UIKit
 
 protocol MovieDetailDelegate: AnyObject {
     func refreshTableView()
-    func presentNewMovie(_ movie: SimilarMovie)
+    func refreshRowsAt(_ indexPathArray: [IndexPath])
 }
 
 final class MovieDetailViewModel: NSObject {
@@ -17,8 +17,10 @@ final class MovieDetailViewModel: NSObject {
     
     private let movieID: Int
     private var mainMovie: MainMovie?
+    private var mainMovieImage: UIImage?
     
     private var similarMovies = [SimilarMovie]()
+    private var similarMoviesImages = [Int : UIImage?]()
     
     init(delegate: MovieDetailDelegate, movieID: Int) {
         self.movieID = movieID
@@ -72,15 +74,15 @@ final class MovieDetailViewModel: NSObject {
 extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if mainMovie == nil {
             return 0
         }
-        
-        // Similar movies + Main movie
         return similarMovies.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         if indexPath.row == 0 {
             let mainMovieCell = MainMovieTableViewCell(movie: mainMovie)
             return mainMovieCell
@@ -98,14 +100,6 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
             return UIScreen.main.bounds.height * 0.6
         } else {
             return UIScreen.main.bounds.height * 0.11
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Similar Movies are beginning in row 1
-        if indexPath.row > 0 {
-            let index = indexPath.row - 1
-            delegate?.presentNewMovie(similarMovies[index])
         }
     }
 }
