@@ -88,7 +88,7 @@ class MainMovieTableViewCell: UITableViewCell {
         }
     }
     
-    private func changeLikeButtonImage() {
+    func updateLikeButtonImage() {
         let buttonImage = UIImage(systemName: isLiked ? "suit.heart.fill" : "suit.heart")
         likeButton.setBackgroundImage(buttonImage, for: .normal)
     }
@@ -103,7 +103,7 @@ class MainMovieTableViewCell: UITableViewCell {
                 PersistenceController.shared.addMovie(id: movieId)
             }
         }
-        changeLikeButtonImage()
+        updateLikeButtonImage()
     }
 }
 
@@ -158,8 +158,7 @@ extension MainMovieTableViewCell {
     
     private func configureLikeButton() {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
-        // TODO: Verify if is a liked movie
-        changeLikeButtonImage()
+        updateLikeButtonImage()
         likeButton.tintColor = .label
         likeButton.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         

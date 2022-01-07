@@ -85,6 +85,7 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
             let mainMovieCell = tableView.dequeueReusableCell(withIdentifier: MainMovieTableViewCell.reuseIdentifier) as! MainMovieTableViewCell
             if let mainMovie = mainMovie {
                 mainMovieCell.setupMovieData(mainMovie)
+                mainMovieCell.updateLikeButtonImage()
             }
             return mainMovieCell
             
