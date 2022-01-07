@@ -53,8 +53,13 @@ class MainMovieTableViewCell: UITableViewCell {
         configureMovieTitleLabel()
         configureTotalLikes()
         configureTotalViews()
-        
+
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        gradientView.applyGradient(colors: [.clear, .systemBackground])
+    }    
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
@@ -93,7 +98,7 @@ class MainMovieTableViewCell: UITableViewCell {
         
         if let imagePath = movie.poster_path {
             movieImageView.getImage(from: imagePath, isMainMovie: true)
-            gradientView.applyGradient(colors: [.clear, .black])
+            gradientView.applyGradient(colors: [.clear, .systemBackground])
         }
     }
     
@@ -210,7 +215,7 @@ extension MainMovieTableViewCell {
     private func configureTotalViews() {
         // Image View
         totalViewsImageView.image = UIImage(systemName: "play.tv.fill")
-        totalViewsImageView.tintColor = .white
+        totalViewsImageView.tintColor = .label
         
         // Label
         let font = UIFont.preferredFont(forTextStyle: .subheadline)

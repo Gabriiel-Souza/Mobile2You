@@ -80,13 +80,6 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
         detailTableView.delaysContentTouches = false
         detailTableView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            detailTableView.topAnchor.constraint(equalTo: view.topAnchor),
-            detailTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            detailTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            detailTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-        
         detailTableView.separatorInset = UIEdgeInsets.init(top: 0, left: UIScreen.main.bounds.width * 0.2, bottom: 0, right: 0)
         
         detailTableView.register(MainMovieTableViewCell.self, forCellReuseIdentifier: MainMovieTableViewCell.reuseIdentifier)

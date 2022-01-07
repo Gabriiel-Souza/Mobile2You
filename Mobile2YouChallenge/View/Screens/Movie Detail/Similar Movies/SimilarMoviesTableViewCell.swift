@@ -24,7 +24,7 @@ class SimilarMoviesTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        backgroundColor = .black
+        backgroundColor = .systemBackground
         clipsToBounds = true
         
         // Subviews
@@ -107,10 +107,10 @@ extension SimilarMoviesTableViewCell {
         titleLabel.font = UIFont.preferredFont(forTextStyle: .body).bold
         titleLabel.numberOfLines = 2
         titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.tintColor = .systemGray
+        titleLabel.tintColor = .label
         
         informationLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
-        informationLabel.tintColor = .darkGray
+        informationLabel.tintColor = .label
         
         NSLayoutConstraint.activate([
             MovieLabelStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
