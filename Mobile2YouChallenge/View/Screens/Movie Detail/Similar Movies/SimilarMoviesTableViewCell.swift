@@ -20,8 +20,8 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         return stackView
     }()
     
-    init(movie: SimilarMovie?) {
-        super.init(style: .default, reuseIdentifier: "SimilarMoviesTableViewCell")
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = .black
         selectionStyle = .none
@@ -33,7 +33,6 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         // Initial Configuration
         configureImage()
         configureMovieLabels()
-        setupMovieData(movie: movie)
     }
     
     @available(*, unavailable)

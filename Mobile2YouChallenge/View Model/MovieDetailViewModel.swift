@@ -82,13 +82,16 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let mainMovieCell = MainMovieTableViewCell(movie: mainMovie)
+            let mainMovieCell = tableView.dequeueReusableCell(withIdentifier: MainMovieTableViewCell.reuseIdentifier) as! MainMovieTableViewCell
+            if let mainMovie = mainMovie {
+                mainMovieCell.setupMovieData(mainMovie)
+            }
             return mainMovieCell
             
         } else {
             let index = indexPath.row-1
-            let similarMovieCell = SimilarMoviesTableViewCell(movie: similarMovies[index])
-            
+            let similarMovieCell = tableView.dequeueReusableCell(withIdentifier: SimilarMoviesTableViewCell.reuseIdentifier) as! SimilarMoviesTableViewCell
+            similarMovieCell.setupMovieData(movie: similarMovies[index])
             return similarMovieCell
         }
     }

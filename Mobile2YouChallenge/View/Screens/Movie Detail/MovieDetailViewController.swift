@@ -72,6 +72,8 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
     private func setupTableView() {
         detailTableView.frame = view.bounds
         detailTableView.delaysContentTouches = false
+        detailTableView.register(MainMovieTableViewCell.self, forCellReuseIdentifier: MainMovieTableViewCell.reuseIdentifier)
+        detailTableView.register(SimilarMoviesTableViewCell.self, forCellReuseIdentifier: SimilarMoviesTableViewCell.reuseIdentifier)
         view.addSubview(detailTableView)
         
         // Delegates

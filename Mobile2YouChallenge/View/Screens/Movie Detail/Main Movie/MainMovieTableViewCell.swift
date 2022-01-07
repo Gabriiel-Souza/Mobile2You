@@ -28,8 +28,8 @@ class MainMovieTableViewCell: UITableViewCell {
     private var totalViewsLabel = UILabel()
     
     
-    init(movie: MainMovie?) {
-        super.init(style: .default, reuseIdentifier: "MainMovieTableViewCell")
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         
         // Subviews
@@ -39,9 +39,6 @@ class MainMovieTableViewCell: UITableViewCell {
         contentView.addSubview(likeButton)
         
         // Initial Configuration
-        if let movie = movie {
-            setupMovieData(movie)
-        }
         configureImage()
         configureTitleBackground()
         configureMovieTitleLabel()
@@ -56,7 +53,7 @@ class MainMovieTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupMovieData(_ movie: MainMovie) {
+    func setupMovieData(_ movie: MainMovie) {
         movieId = movie.id
         isLiked = PersistenceController.shared.fetchFavoriteMovie(id: movie.id) != nil ? true : false
         // Format total votes number
