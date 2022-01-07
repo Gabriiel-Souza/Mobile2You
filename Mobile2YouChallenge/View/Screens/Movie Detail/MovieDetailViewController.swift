@@ -35,7 +35,6 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
         setupTableView()
         
         // Register Table View Cells
-        
         setupConstraints()
     }
     
@@ -63,7 +62,10 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
     }
     
     @objc private func backButtonPressed(sender: UIButton) {
-        print("Back Button Pressed")
+        guard let vcNumber = navigationController?.viewControllers.count else { return }
+        if vcNumber > 1 {
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     // MARK: - Setups
@@ -76,7 +78,7 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
         detailTableView.delegate = viewModel
         detailTableView.dataSource = viewModel
     }
-
+    
     private func setupConstraints() {
         detailTableView.edgesConstraints(to: view)
     }
@@ -92,10 +94,8 @@ extension MovieDetailViewController {
         }
     }
     
-    func refreshRowsAt(_ indexPathArray: [IndexPath]) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.detailTableView.reloadRows(at: indexPathArray, with: .none)
-        }
+    func presentNewMovie(_ movie: SimilarMovie) {
+        let movieDetailVC = MovieDetailViewController(movieID: movie.id)
+        navigationController?.pushViewController(movieDetailVC, animated: true)
     }
 }
