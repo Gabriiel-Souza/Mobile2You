@@ -76,6 +76,8 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
     private func setupTableView() {
         detailTableView.frame = view.bounds
         detailTableView.delaysContentTouches = false
+        detailTableView.separatorInset = UIEdgeInsets.init(top: 0, left: UIScreen.main.bounds.width * 0.2, bottom: 0, right: 0)
+        
         detailTableView.register(MainMovieTableViewCell.self, forCellReuseIdentifier: MainMovieTableViewCell.reuseIdentifier)
         detailTableView.register(SimilarMoviesTableViewCell.self, forCellReuseIdentifier: SimilarMoviesTableViewCell.reuseIdentifier)
         view.addSubview(detailTableView)

@@ -21,6 +21,7 @@ final class MovieDetailViewModel: NSObject {
     
     private var mainMovieCellHeight = UIScreen.main.bounds.height * 0.55
     private var similarMovieCellHeight = UIScreen.main.bounds.height * 0.11
+    private let cellsMargin = UIEdgeInsets.init(top: 0, left: UIScreen.main.bounds.width * 0.2, bottom: 0, right: 0)
     
     private var similarMovies = [SimilarMovie]()
     
@@ -91,12 +92,15 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
                 mainMovieCell.setupMovieData(mainMovie)
                 mainMovieCell.updateLikeButtonImage()
             }
-            return mainMovieCell
+            mainMovieCell.separatorInset.left = UIScreen.main.bounds.width
             
+            return mainMovieCell
         } else {
             let index = indexPath.row-1
             let similarMovieCell = tableView.dequeueReusableCell(withIdentifier: SimilarMoviesTableViewCell.reuseIdentifier) as! SimilarMoviesTableViewCell
             similarMovieCell.setupMovieData(movie: similarMovies[index])
+            similarMovieCell.layoutMargins = cellsMargin
+            
             return similarMovieCell
         }
     }
