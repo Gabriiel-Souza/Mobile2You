@@ -11,52 +11,62 @@ class MainMovieTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "MainMovieTableViewCell"
     
-    private var movieImageView = FetchableImageView()
-    
     private var isLiked = false
     private var movieId: Int?
+    
+    var movieImageView = FetchableImageView()
     
     // Title Background
     private var titleBackgroundView = UIView()
     private var titleLabel = UILabel()
     private var likeButton = UIButton()
     
+    // Gradient
+    private var gradientView = UIView()
+    
+    // Total Likes
     private var totalLikesImageView = UIImageView()
     private var totalLikesLabel = UILabel()
     
+    // Total View
     private var totalViewsImageView = UIImageView()
     private var totalViewsLabel = UILabel()
     
     
-    init(movie: MainMovie?) {
-        super.init(style: .default, reuseIdentifier: "MainMovieTableViewCell")
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        clipsToBounds = true
         
         // Subviews
         contentView.addSubview(movieImageView)
+        contentView.addSubview(gradientView)
         contentView.addSubview(titleBackgroundView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(likeButton)
         
         // Initial Configuration
-        if let movie = movie {
-            setupMovieData(movie)
-        }
         configureImage()
         configureTitleBackground()
-        configureMovieTitleLabel()
+        configureGradient()
         configureLikeButton()
+        configureMovieTitleLabel()
         configureTotalLikes()
         configureTotalViews()
-        
+
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        gradientView.applyGradient(colors: [.clear, .systemBackground])
+    }    
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupMovieData(_ movie: MainMovie) {
+    func setupMovieData(_ movie: MainMovie) {
         movieId = movie.id
         isLiked = PersistenceController.shared.fetchFavoriteMovie(id: movie.id) != nil ? true : false
         // Format total votes number
@@ -87,11 +97,12 @@ class MainMovieTableViewCell: UITableViewCell {
         }
         
         if let imagePath = movie.poster_path {
-            movieImageView.getImage(from: imagePath)
+            movieImageView.getImage(from: imagePath, isMainMovie: true)
+            gradientView.applyGradient(colors: [.clear, .systemBackground])
         }
     }
     
-    private func changeLikeButtonImage() {
+    func updateLikeButtonImage() {
         let buttonImage = UIImage(systemName: isLiked ? "suit.heart.fill" : "suit.heart")
         likeButton.setBackgroundImage(buttonImage, for: .normal)
     }
@@ -106,7 +117,7 @@ class MainMovieTableViewCell: UITableViewCell {
                 PersistenceController.shared.addMovie(id: movieId)
             }
         }
-        changeLikeButtonImage()
+        updateLikeButtonImage()
     }
 }
 
@@ -114,7 +125,7 @@ class MainMovieTableViewCell: UITableViewCell {
 extension MainMovieTableViewCell {
     private func configureImage() {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
-        movieImageView.backgroundColor = .gray
+        
         movieImageView.clipsToBounds = true
         movieImageView.contentMode = .scaleAspectFill
         
@@ -135,10 +146,18 @@ extension MainMovieTableViewCell {
             titleBackgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleBackgroundView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.25)
         ])
+    }
+    
+    private func configureGradient() {
+        gradientView.translatesAutoresizingMaskIntoConstraints = false
+        gradientView.clipsToBounds = true
         
-        // TODO: Apply Gradient
-        //        let color = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        //        titleBackgroundView.applyGradient(isVertical: true, colors: [color, .black])
+        NSLayoutConstraint.activate([
+            gradientView.topAnchor.constraint(equalTo: centerYAnchor, constant: 10),
+            gradientView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            gradientView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            gradientView.bottomAnchor.constraint(equalTo: titleBackgroundView.topAnchor)
+        ])
     }
     
     private func configureMovieTitleLabel() {
@@ -155,14 +174,13 @@ extension MainMovieTableViewCell {
             titleLabel.leadingAnchor.constraint(equalTo: titleBackgroundView.leadingAnchor, constant: 8),
             titleLabel.topAnchor.constraint(equalTo: titleBackgroundView.topAnchor, constant: -2),
             titleLabel.heightAnchor.constraint(equalTo: titleBackgroundView.heightAnchor, multiplier: 0.6),
-            titleLabel.widthAnchor.constraint(equalTo: titleBackgroundView.widthAnchor, multiplier: 0.5)
+            titleLabel.trailingAnchor.constraint(equalTo: likeButton.leadingAnchor, constant: -8)
         ])
     }
     
     private func configureLikeButton() {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
-        // TODO: Verify if is a liked movie
-        changeLikeButtonImage()
+        updateLikeButtonImage()
         likeButton.tintColor = .label
         likeButton.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         
@@ -197,7 +215,7 @@ extension MainMovieTableViewCell {
     private func configureTotalViews() {
         // Image View
         totalViewsImageView.image = UIImage(systemName: "play.tv.fill")
-        totalViewsImageView.tintColor = .white
+        totalViewsImageView.tintColor = .label
         
         // Label
         let font = UIFont.preferredFont(forTextStyle: .subheadline)

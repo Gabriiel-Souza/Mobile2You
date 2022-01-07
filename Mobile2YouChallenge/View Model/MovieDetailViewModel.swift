@@ -10,6 +10,7 @@ import UIKit
 protocol MovieDetailDelegate: AnyObject {
     func refreshTableView()
     func presentNewMovie(_ movie: SimilarMovie)
+    func scrollViewDidScroll()
 }
 
 final class MovieDetailViewModel: NSObject {
@@ -18,7 +19,12 @@ final class MovieDetailViewModel: NSObject {
     private let movieID: Int
     private var mainMovie: MainMovie?
     
+    private var mainMovieCellHeight = UIScreen.main.bounds.height * 0.55
+    private var similarMovieCellHeight = UIScreen.main.bounds.height * 0.11
+    private let cellsMargin = UIEdgeInsets.init(top: 0, left: UIScreen.main.bounds.width * 0.2, bottom: 0, right: 0)
+    
     private var similarMovies = [SimilarMovie]()
+    private var favoriteMovies = [Int32]()
     
     init(delegate: MovieDetailDelegate, movieID: Int) {
         self.movieID = movieID
@@ -60,6 +66,9 @@ final class MovieDetailViewModel: NSObject {
             guard let self = self else { return }
             do {
                 self.similarMovies = try result.get()
+                if let favoriteMovies = PersistenceController.shared.fetchFavoriteMovies() {
+                    self.favoriteMovies = favoriteMovies.map { $0.id }
+                }
                 self.delegate?.refreshTableView()
             } catch {
                 print(error.localizedDescription)
@@ -82,12 +91,23 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let mainMovieCell = MainMovieTableViewCell(movie: mainMovie)
-            return mainMovieCell
+            let mainMovieCell = tableView.dequeueReusableCell(withIdentifier: MainMovieTableViewCell.reuseIdentifier) as! MainMovieTableViewCell
+            if let mainMovie = mainMovie {
+                mainMovieCell.setupMovieData(mainMovie)
+                mainMovieCell.updateLikeButtonImage()
+            }
+            mainMovieCell.separatorInset.left = UIScreen.main.bounds.width
             
+            return mainMovieCell
         } else {
             let index = indexPath.row-1
-            let similarMovieCell = SimilarMoviesTableViewCell(movie: similarMovies[index])
+            let similarMovieCell = tableView.dequeueReusableCell(withIdentifier: SimilarMoviesTableViewCell.reuseIdentifier) as! SimilarMoviesTableViewCell
+            
+            let similarMovie = similarMovies[index]
+            let isFavorite = favoriteMovies.contains(Int32(similarMovie.id))
+            
+            similarMovieCell.setupMovieData(movie: similarMovie, isFavorite: isFavorite)
+            similarMovieCell.layoutMargins = cellsMargin
             
             return similarMovieCell
         }
@@ -95,9 +115,9 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return UIScreen.main.bounds.height * 0.6
+            return mainMovieCellHeight
         } else {
-            return UIScreen.main.bounds.height * 0.11
+            return similarMovieCellHeight
         }
     }
     
@@ -107,5 +127,9 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
             let index = indexPath.row - 1
             delegate?.presentNewMovie(similarMovies[index])
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegate?.scrollViewDidScroll()
     }
 }

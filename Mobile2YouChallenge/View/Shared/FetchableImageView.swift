@@ -23,14 +23,13 @@ class FetchableImageView: UIImageView {
             guard let self = self else { return }
             self.loadSpinner.startAnimating()
         }
-        
     }
     
     private func removeSpinner() {
         loadSpinner.removeFromSuperview()
     }
     
-    func getImage(from imagePath: String) {
+    func getImage(from imagePath: String, isMainMovie: Bool) {
         image = nil
         addSpinner()
         guard let url = URL(string: "https://image.tmdb.org/t/p/original\(imagePath)") else {
@@ -42,7 +41,7 @@ class FetchableImageView: UIImageView {
         
         if let imageFromCache = imageCache.object(forKey: url.absoluteString as AnyObject) {
             removeSpinner()
-            image = imageFromCache
+            animateImage(imageFromCache, isMainMovie: isMainMovie, isCached: true)
             return
         }
         
@@ -61,9 +60,31 @@ class FetchableImageView: UIImageView {
             
             DispatchQueue.main.async {
                 self.removeSpinner()
-                self.image = image
+                self.animateImage(image, isMainMovie: isMainMovie, isCached: false)
             }
         }
         task?.resume()
+    }
+    
+    private func animateImage(_ newImage: UIImage?, isMainMovie: Bool, isCached: Bool) {
+        if !isCached {
+            var duration = 1.0
+            if isMainMovie {
+                duration = 2.0
+            }
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.alpha = 0
+                self.image = newImage
+                UIView.animate(withDuration: duration) {
+                    self.alpha = 1
+                }
+            }
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.image = newImage
+            }
+        }
     }
 }

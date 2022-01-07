@@ -47,6 +47,16 @@ struct PersistenceController {
         }
     }
     
+    func fetchFavoriteMovies() -> [FavoriteMovie]? {
+        do {
+            let movies = try context?.fetch(FavoriteMovie.fetchRequest())
+            return movies
+        } catch {
+            print("Error in Favorite Movie Fetch Request: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
     func deleteMovie(_ movie: FavoriteMovie) {
         context?.delete(movie)
         save()
