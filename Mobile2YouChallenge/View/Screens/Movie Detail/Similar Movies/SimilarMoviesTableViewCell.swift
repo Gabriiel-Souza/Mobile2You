@@ -12,6 +12,7 @@ class SimilarMoviesTableViewCell: UITableViewCell {
     static let reuseIdentifier = "SimilarMoviesTableViewCell"
     
     private let movieImageView = FetchableImageView()
+    private let likedImageView = UIImageView()
     private let titleLabel = UILabel()
     private let informationLabel = UILabel()
     private lazy var MovieLabelStackView: UIStackView = {
@@ -24,14 +25,16 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = .black
-        selectionStyle = .none
+        clipsToBounds = true
         
         // Subviews
         contentView.addSubview(movieImageView)
+        contentView.addSubview(likedImageView)
         contentView.addSubview(MovieLabelStackView)
         
         // Initial Configuration
         configureImage()
+        configureLikedImageView()
         configureMovieLabels()
     }
     
@@ -40,8 +43,10 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupMovieData(movie: SimilarMovie?) {
+    func setupMovieData(movie: SimilarMovie?, isFavorite: Bool) {
         guard let movie = movie else { return }
+        likedImageView.isHidden = !isFavorite
+        
         let movieYear = movie.release_date.components(separatedBy: "-").first
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -110,7 +115,21 @@ extension SimilarMoviesTableViewCell {
         NSLayoutConstraint.activate([
             MovieLabelStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             MovieLabelStackView.leadingAnchor.constraint(equalTo: movieImageView.trailingAnchor, constant: 12),
-            MovieLabelStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+            MovieLabelStackView.trailingAnchor.constraint(equalTo: likedImageView.leadingAnchor, constant: -8)
+        ])
+    }
+    
+    private func configureLikedImageView() {
+        likedImageView.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(systemName: "suit.heart.fill")
+        
+        likedImageView.image = image
+        likedImageView.tintColor = .label
+        NSLayoutConstraint.activate([
+            likedImageView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            likedImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
+            likedImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2),
+            likedImageView.widthAnchor.constraint(equalTo: likedImageView.heightAnchor)
         ])
     }
 }

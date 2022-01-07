@@ -24,6 +24,7 @@ final class MovieDetailViewModel: NSObject {
     private let cellsMargin = UIEdgeInsets.init(top: 0, left: UIScreen.main.bounds.width * 0.2, bottom: 0, right: 0)
     
     private var similarMovies = [SimilarMovie]()
+    private var favoriteMovies = [Int32]()
     
     init(delegate: MovieDetailDelegate, movieID: Int) {
         self.movieID = movieID
@@ -65,6 +66,9 @@ final class MovieDetailViewModel: NSObject {
             guard let self = self else { return }
             do {
                 self.similarMovies = try result.get()
+                if let favoriteMovies = PersistenceController.shared.fetchFavoriteMovies() {
+                    self.favoriteMovies = favoriteMovies.map { $0.id }
+                }
                 self.delegate?.refreshTableView()
             } catch {
                 print(error.localizedDescription)
@@ -98,7 +102,11 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
         } else {
             let index = indexPath.row-1
             let similarMovieCell = tableView.dequeueReusableCell(withIdentifier: SimilarMoviesTableViewCell.reuseIdentifier) as! SimilarMoviesTableViewCell
-            similarMovieCell.setupMovieData(movie: similarMovies[index])
+            
+            let similarMovie = similarMovies[index]
+            let isFavorite = favoriteMovies.contains(Int32(similarMovie.id))
+            
+            similarMovieCell.setupMovieData(movie: similarMovie, isFavorite: isFavorite)
             similarMovieCell.layoutMargins = cellsMargin
             
             return similarMovieCell

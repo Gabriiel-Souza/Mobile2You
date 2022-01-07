@@ -28,10 +28,13 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
         view.backgroundColor = .purple
         configureNavBar()
         
-        detailTableView.contentInsetAdjustmentBehavior = .never
         viewModel = MovieDetailViewModel(delegate: self,
                                          movieID: movieID)
         
+        detailTableView.backgroundColor = .systemBackground
+        detailTableView.contentInsetAdjustmentBehavior = .never
+        
+        view.addSubview(detailTableView)
         setupTableView()
         
         // Register Table View Cells
@@ -74,13 +77,20 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
     
     // MARK: - Setups
     private func setupTableView() {
-        detailTableView.frame = view.bounds
         detailTableView.delaysContentTouches = false
+        detailTableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            detailTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            detailTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            detailTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            detailTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        
         detailTableView.separatorInset = UIEdgeInsets.init(top: 0, left: UIScreen.main.bounds.width * 0.2, bottom: 0, right: 0)
         
         detailTableView.register(MainMovieTableViewCell.self, forCellReuseIdentifier: MainMovieTableViewCell.reuseIdentifier)
         detailTableView.register(SimilarMoviesTableViewCell.self, forCellReuseIdentifier: SimilarMoviesTableViewCell.reuseIdentifier)
-        view.addSubview(detailTableView)
         
         // Delegates
         detailTableView.delegate = viewModel
@@ -89,6 +99,14 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
     
     private func setupConstraints() {
         detailTableView.edgesConstraints(to: view)
+    }
+    
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        
+        var insets = view.safeAreaInsets
+        insets.top = 0
+        detailTableView.contentInset = insets
     }
 }
 
