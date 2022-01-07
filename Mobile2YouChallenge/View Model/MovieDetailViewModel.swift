@@ -19,7 +19,7 @@ final class MovieDetailViewModel: NSObject {
     private let movieID: Int
     private var mainMovie: MainMovie?
     
-    private var mainMovieCellHeight = UIScreen.main.bounds.height * 0.6
+    private var mainMovieCellHeight = UIScreen.main.bounds.height * 0.55
     private var similarMovieCellHeight = UIScreen.main.bounds.height * 0.11
     
     private var similarMovies = [SimilarMovie]()

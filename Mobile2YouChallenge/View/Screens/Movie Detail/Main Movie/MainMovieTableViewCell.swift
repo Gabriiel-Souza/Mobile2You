@@ -11,19 +11,24 @@ class MainMovieTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "MainMovieTableViewCell"
     
-    var movieImageView = FetchableImageView()
-    
     private var isLiked = false
     private var movieId: Int?
+    
+    var movieImageView = FetchableImageView()
     
     // Title Background
     private var titleBackgroundView = UIView()
     private var titleLabel = UILabel()
     private var likeButton = UIButton()
     
+    // Gradient
+    private var gradientView = UIView()
+    
+    // Total Likes
     private var totalLikesImageView = UIImageView()
     private var totalLikesLabel = UILabel()
     
+    // Total View
     private var totalViewsImageView = UIImageView()
     private var totalViewsLabel = UILabel()
     
@@ -35,6 +40,7 @@ class MainMovieTableViewCell: UITableViewCell {
         
         // Subviews
         contentView.addSubview(movieImageView)
+        contentView.addSubview(gradientView)
         contentView.addSubview(titleBackgroundView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(likeButton)
@@ -42,6 +48,7 @@ class MainMovieTableViewCell: UITableViewCell {
         // Initial Configuration
         configureImage()
         configureTitleBackground()
+        configureGradient()
         configureLikeButton()
         configureMovieTitleLabel()
         configureTotalLikes()
@@ -86,6 +93,7 @@ class MainMovieTableViewCell: UITableViewCell {
         
         if let imagePath = movie.poster_path {
             movieImageView.getImage(from: imagePath, isMainMovie: true)
+            gradientView.applyGradient(colors: [.clear, .black])
         }
     }
     
@@ -133,10 +141,18 @@ extension MainMovieTableViewCell {
             titleBackgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleBackgroundView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.25)
         ])
+    }
+    
+    private func configureGradient() {
+        gradientView.translatesAutoresizingMaskIntoConstraints = false
+        gradientView.clipsToBounds = true
         
-        // TODO: Apply Gradient
-        //        let color = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        //        titleBackgroundView.applyGradient(isVertical: true, colors: [color, .black])
+        NSLayoutConstraint.activate([
+            gradientView.topAnchor.constraint(equalTo: centerYAnchor, constant: 10),
+            gradientView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            gradientView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            gradientView.bottomAnchor.constraint(equalTo: titleBackgroundView.topAnchor)
+        ])
     }
     
     private func configureMovieTitleLabel() {
