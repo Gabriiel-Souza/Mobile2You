@@ -10,6 +10,7 @@ import UIKit
 protocol MovieDetailDelegate: AnyObject {
     func refreshTableView()
     func presentNewMovie(_ movie: SimilarMovie)
+    func scrollViewDidScroll()
 }
 
 final class MovieDetailViewModel: NSObject {
@@ -17,6 +18,9 @@ final class MovieDetailViewModel: NSObject {
     
     private let movieID: Int
     private var mainMovie: MainMovie?
+    
+    private var mainMovieCellHeight = UIScreen.main.bounds.height * 0.55
+    private var similarMovieCellHeight = UIScreen.main.bounds.height * 0.11
     
     private var similarMovies = [SimilarMovie]()
     
@@ -82,22 +86,26 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let mainMovieCell = MainMovieTableViewCell(movie: mainMovie)
+            let mainMovieCell = tableView.dequeueReusableCell(withIdentifier: MainMovieTableViewCell.reuseIdentifier) as! MainMovieTableViewCell
+            if let mainMovie = mainMovie {
+                mainMovieCell.setupMovieData(mainMovie)
+                mainMovieCell.updateLikeButtonImage()
+            }
             return mainMovieCell
             
         } else {
             let index = indexPath.row-1
-            let similarMovieCell = SimilarMoviesTableViewCell(movie: similarMovies[index])
-            
+            let similarMovieCell = tableView.dequeueReusableCell(withIdentifier: SimilarMoviesTableViewCell.reuseIdentifier) as! SimilarMoviesTableViewCell
+            similarMovieCell.setupMovieData(movie: similarMovies[index])
             return similarMovieCell
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return UIScreen.main.bounds.height * 0.6
+            return mainMovieCellHeight
         } else {
-            return UIScreen.main.bounds.height * 0.11
+            return similarMovieCellHeight
         }
     }
     
@@ -107,5 +115,9 @@ extension MovieDetailViewModel: UITableViewDelegate, UITableViewDataSource {
             let index = indexPath.row - 1
             delegate?.presentNewMovie(similarMovies[index])
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegate?.scrollViewDidScroll()
     }
 }

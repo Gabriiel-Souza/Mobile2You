@@ -50,6 +50,7 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
         let backButton = UIButton(frame: CGRect(x: 0, y: 0, width: size, height: size))
         backButton.configuration = backImageConfig
         backButton.backgroundColor = .black
+        backButton.alpha = 0.85
         backButton.layer.cornerRadius = backButton.frame.width / 2.0
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         
@@ -59,6 +60,9 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
         menuBarItem.customView?.widthAnchor.constraint(equalToConstant: size).isActive = true
         
         navigationItem.leftBarButtonItem = menuBarItem
+        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
     
     @objc private func backButtonPressed(sender: UIButton) {
@@ -72,6 +76,8 @@ class MovieDetailViewController: UIViewController, MovieDetailDelegate {
     private func setupTableView() {
         detailTableView.frame = view.bounds
         detailTableView.delaysContentTouches = false
+        detailTableView.register(MainMovieTableViewCell.self, forCellReuseIdentifier: MainMovieTableViewCell.reuseIdentifier)
+        detailTableView.register(SimilarMoviesTableViewCell.self, forCellReuseIdentifier: SimilarMoviesTableViewCell.reuseIdentifier)
         view.addSubview(detailTableView)
         
         // Delegates
@@ -97,5 +103,18 @@ extension MovieDetailViewController {
     func presentNewMovie(_ movie: SimilarMovie) {
         let movieDetailVC = MovieDetailViewController(movieID: movie.id)
         navigationController?.pushViewController(movieDetailVC, animated: true)
+    }
+    
+    func scrollViewDidScroll() {
+        let offsetY = detailTableView.contentOffset.y
+        if let mainMovieCell = detailTableView.visibleCells.first as? MainMovieTableViewCell {
+            if offsetY > 0 {
+                let x = mainMovieCell.movieImageView.frame.origin.x
+                let w = mainMovieCell.movieImageView.bounds.width
+                let h = mainMovieCell.movieImageView.bounds.height
+                let y = ((offsetY - mainMovieCell.frame.origin.y) / h) * 200
+                mainMovieCell.movieImageView.frame = CGRect(x: x, y: y, width: w, height: h)
+            }
+        }
     }
 }
