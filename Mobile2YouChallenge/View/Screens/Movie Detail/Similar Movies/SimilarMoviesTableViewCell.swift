@@ -11,7 +11,7 @@ class SimilarMoviesTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "SimilarMoviesTableViewCell"
     
-    private let movieImageView = UIImageView()
+    private let movieImageView = FetchableImageView()
     private let titleLabel = UILabel()
     private let informationLabel = UILabel()
     private lazy var MovieLabelStackView: UIStackView = {
@@ -31,9 +31,9 @@ class SimilarMoviesTableViewCell: UITableViewCell {
         contentView.addSubview(MovieLabelStackView)
         
         // Initial Configuration
-        setupMovieData(movie: movie)
         configureImage()
         configureMovieLabels()
+        setupMovieData(movie: movie)
     }
     
     @available(*, unavailable)
@@ -77,12 +77,8 @@ class SimilarMoviesTableViewCell: UITableViewCell {
             self.informationLabel.text = "\(movieYear ?? "") \(genresDescription)"
         }
         
-    }
-    
-    func updateMovieImage(_ image: UIImage?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.movieImageView.image = image
+        if let imagePath = movie.poster_path {
+            movieImageView.getImage(from: imagePath)
         }
     }
 }
@@ -91,7 +87,6 @@ class SimilarMoviesTableViewCell: UITableViewCell {
 extension SimilarMoviesTableViewCell {
     private func configureImage() {
         movieImageView.translatesAutoresizingMaskIntoConstraints = false
-        movieImageView.backgroundColor = .gray
         movieImageView.contentMode = .scaleAspectFill
         
         NSLayoutConstraint.activate([
